@@ -62,6 +62,15 @@ public class GameFlow {
 
 
     private void loadData() {
+        /*
+         * 读取数据文件,并将数据文件中的数据转换成成语对象列表
+         * 完成的任务分别有:
+         * 1.将成语对象列表存入idioms中,并完成对每个成语的每个字和拼音的处理
+         * 2.生成pinyinZiListMap,存储某个拼音(无声调)对应的所有汉字
+         * 3.生成initialWordListMap,存储以某个汉字开头的所有成语
+         * 4.生成wordIdiomMap,存储每个成语对应的详细信息
+         * 5.初始化idioms对象的某个成语在全量成语中的可接龙成语个数属性,分为不允许同音和允许同音两种情况
+         */
         String data = DataUtil.readData();
         if (data == null) {
             System.err.println("无法读取数据文件!");
@@ -122,9 +131,22 @@ public class GameFlow {
                 initialWordListMap.put(initial, list);
             }
         }
+        //计算每个成语的可接龙成语个数
+        for (Idiom idiom : idioms) {
+        // 计算不允许同音的可接龙成语个数
+            char lastChar = idiom.getCharacterList().get(idiom.getCharacterList().size() - 1).getZi();
+            int notAllowHomophoneNum = initialWordListMap.get(lastChar).size() - 1;
+            idiom.setNotAllowHomophoneNum(notAllowHomophoneNum);
+
+            // 计算允许同音的可接龙成语个数
+            ChineseCharacter lastChineseCharacter = idiom.getCharacterList().get(idiom.getCharacterList().size() - 1);
+            String pinyinWithoutTone = lastChineseCharacter.getPinyin();
+            int allowHomophoneNum = pinyinZiListMap.get(pinyinWithoutTone).size() - 1;
+            idiom.setAllowHomophoneNum(allowHomophoneNum);
+        }
     }
 
-    private void selectGame() {
+    private void selectGame() {//选择游戏
         System.out.println("请选择游戏: 1-成语词典 2-成语接龙");
         System.out.print(">>>");
         String mode = sc.nextLine();
@@ -135,12 +157,12 @@ public class GameFlow {
         }
     }
 
-    protected void exit() {
+    protected void exit() {//退出游戏
         sc.close();
         System.exit(0);
     }
 
-    protected void mainFlow() {
+    protected void mainFlow() {//进入游戏主要流程
         if (gameFlow != null) {
             gameFlow.mainFlow();
         }

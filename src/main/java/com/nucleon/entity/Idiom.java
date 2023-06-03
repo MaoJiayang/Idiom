@@ -16,9 +16,9 @@ public class Idiom {
     private String example;
     //汉字列表
     private List<ChineseCharacter> CharacterList;
-    //不允许同音的可接龙成语个数
+    //不允许同音的可接龙成语个数,用于计算分数
     private int notAllowHomophoneNum;
-    //允许同音的可接龙成语个数
+    //允许同音的可接龙成语个数,用于计算分数
     private int allowHomophoneNum;
 
     public String getWord() {
