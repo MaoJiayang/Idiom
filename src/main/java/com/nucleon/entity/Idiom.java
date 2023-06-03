@@ -16,6 +16,10 @@ public class Idiom {
     private String example;
     //汉字列表
     private List<ChineseCharacter> CharacterList;
+    //不允许同音的可接龙成语个数
+    private int notAllowHomophoneNum;
+    //允许同音的可接龙成语个数
+    private int allowHomophoneNum;
 
     public String getWord() {
         return word;
@@ -71,5 +75,17 @@ public class Idiom {
 
     public void setCharacterList(List<ChineseCharacter> CharacterList) {
         this.CharacterList = CharacterList;
+    }
+    public void setNotAllowHomophoneNum(int notAllowHomophoneNum) {
+        this.notAllowHomophoneNum = notAllowHomophoneNum;
+    }
+    public void setAllowHomophoneNum(int allowHomophoneNum) {
+        this.allowHomophoneNum = allowHomophoneNum;
+    }
+    public int getNotAllowHomophoneNum() {
+        return notAllowHomophoneNum;
+    }
+    public int getAllowHomophoneNum() {
+        return allowHomophoneNum;
     }
 }
