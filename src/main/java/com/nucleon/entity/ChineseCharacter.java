@@ -1,6 +1,6 @@
 package com.nucleon.entity;
 
-public class Character {
+public class ChineseCharacter {
     //字
     private char zi;
     //不带音调的拼音

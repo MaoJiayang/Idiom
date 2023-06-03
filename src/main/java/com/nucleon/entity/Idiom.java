@@ -15,7 +15,7 @@ public class Idiom {
     //举例
     private String example;
     //汉字列表
-    private List<Character> CharacterList;
+    private List<ChineseCharacter> CharacterList;
 
     public String getWord() {
         return word;
@@ -65,11 +65,11 @@ public class Idiom {
         this.example = example;
     }
 
-    public List<Character> getCharacterList() {
+    public List<ChineseCharacter> getCharacterList() {
         return CharacterList;
     }
 
-    public void setCharacterList(List<Character> CharacterList) {
+    public void setCharacterList(List<ChineseCharacter> CharacterList) {
         this.CharacterList = CharacterList;
     }
 }
