@@ -30,13 +30,9 @@ public class GameFlow {
     // 如{"我行我素":{"abbreviation":"wxws","derivation":...,"example":...,"explanation":...,"CharacterList":[...]}}
     protected static Map<String, Idiom> wordIdiomMap = new HashMap<>();
 
-    //存储某个成语在全量成语中的可接龙成语个数,分为不允许同音和允许同音两种情况
-
-
-
     //存储游戏中已经使用过的成语
-    //如{"我行我素":true,"我见犹怜":true,...}
-    protected static Map<String, Boolean> usedWordMap = new HashMap<>();
+    //如{"我行我素(对象)":true,"我见犹怜(对象)":true,...}
+    protected static Map<Idiom, Boolean> usedWordMap = new HashMap<>();
 
     public GameFlow() {
     }
@@ -100,7 +96,7 @@ public class GameFlow {
                 continue;
             }
             boolean isCommon = false;
-            for (Idiom commonIdiom : commonIdioms) {
+            for (Idiom commonIdiom : commonIdioms) {//这一段循环其实是对作业要求的妥协.其要求导入两个文件,而不是一个文件里含有是否常用的标记来判断是否常用
                 if (word.equals(commonIdiom.getWord())) {
                     isCommon = true;
                     break;
