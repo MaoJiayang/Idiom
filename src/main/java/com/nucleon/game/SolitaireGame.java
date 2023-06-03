@@ -38,6 +38,13 @@ public class SolitaireGame extends GameFlow {
     }
 
     private void doMainFlow() {
+        /*
+         * 1.用户输入一个成语作为开头
+         * 2.判断成语是否存在
+         * 3.判断成语是否已经被使用过
+         * 4.判断成语是否符合接龙规则
+         * 
+         */
         //TODO:完成游戏主要流程
     }
 
