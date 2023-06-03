@@ -5,8 +5,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 public class DataUtil {
-    public static String readData() {
-        InputStream in = Main.class.getClassLoader().getResourceAsStream("idiom.json");
+    public static String readData(String fileName) {
+        InputStream in = Main.class.getClassLoader().getResourceAsStream(fileName);
         if (in == null) {
             return null;
         }

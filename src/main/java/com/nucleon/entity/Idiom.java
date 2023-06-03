@@ -20,6 +20,7 @@ public class Idiom {
     private int notAllowHomophoneNum;
     //允许同音的可接龙成语个数,用于计算分数
     private int allowHomophoneNum;
+    private boolean isCommonlyUsed;
 
     public String getWord() {
         return word;
@@ -87,5 +88,11 @@ public class Idiom {
     }
     public int getAllowHomophoneNum() {
         return allowHomophoneNum;
+    }
+    public void setCommonlyUsed(boolean isCommonlyUsed) {
+        this.isCommonlyUsed = isCommonlyUsed;
+    }
+    public boolean getCommonlyUsed() {
+        return isCommonlyUsed;
     }
 }

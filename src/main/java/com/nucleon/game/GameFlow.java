@@ -65,32 +65,49 @@ public class GameFlow {
         /*
          * 读取数据文件,并将数据文件中的数据转换成成语对象列表
          * 完成的任务分别有:
-         * 1.将成语对象列表存入idioms中,并完成对每个成语的每个字和拼音的处理
+         * 1.将成语对象列表存入idioms中,并完成对每个成语的每个字和拼音的处理,并标记成语是否是常用成语
          * 2.生成pinyinZiListMap,存储某个拼音(无声调)对应的所有汉字
          * 3.生成initialWordListMap,存储以某个汉字开头的所有成语
          * 4.生成wordIdiomMap,存储每个成语对应的详细信息
          * 5.初始化idioms对象的某个成语在全量成语中的可接龙成语个数属性,分为不允许同音和允许同音两种情况
          */
-        String data = DataUtil.readData();
-        if (data == null) {
+        String data = DataUtil.readData("idiom.json");
+        String commonData = DataUtil.readData("common_idiom.json");
+        if (data == null || commonData == null) {
             System.err.println("无法读取数据文件!");
             exit();
         }
 
         List<Idiom> idioms = null;
+        List<Idiom> commonIdioms = null;
         try {
             idioms = JSON.parseArray(data, Idiom.class);
+            commonIdioms = JSON.parseArray(commonData, Idiom.class);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if (idioms == null || idioms.size() < 1) {
+        if (idioms == null || idioms.size() < 1 || commonIdioms == null || commonIdioms.size() < 1) {
             System.err.println("数据文件非法!");
             return;
         }
 
         for (Idiom idiom : idioms) {
+
             String word = idiom.getWord();
             String pinyin = idiom.getPinyin();
+            //对于每个成语,判断其是否是常用成语
+            if (word == null || word.length() < 1) {
+                continue;
+            }
+            boolean isCommon = false;
+            for (Idiom commonIdiom : commonIdioms) {
+                if (word.equals(commonIdiom.getWord())) {
+                    isCommon = true;
+                    break;
+                }
+            }
+            idiom.setCommonlyUsed(isCommon);
+            //拼音和汉字处理
             if (word == null || word.length() < 1 || pinyin == null || pinyin.length() < 1) {
                 continue;
             }
@@ -98,7 +115,6 @@ public class GameFlow {
             if (word.length() != pinyinArr.length) {
                 continue;
             }
-
             Character initial = null;
             List<ChineseCharacter> CharacterList = new ArrayList<>();
             for (int i = 0; i < word.length(); i++) {   //对于每个成语,遍历每个字创建ChineseCharacter对象
@@ -111,7 +127,7 @@ public class GameFlow {
                 if (i == 0) {
                     initial = zi;
                 }
-
+//以上部分是对成语,成语的每个字和拼音,以及是否常用的处理,下面是对成语的其他信息的处理
                 if (pinyinZiListMap.containsKey(pinyinWithoutTone)) {//同音字列表预处理.如果已经存在该拼音,则将该字加入到对应的集合中
                     pinyinZiListMap.get(pinyinWithoutTone).add(zi);
                 } else {//如果不存在该拼音,则创建一个新的集合,并将该字加入到集合中
