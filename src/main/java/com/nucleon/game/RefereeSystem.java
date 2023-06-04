@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
+import java.util.Iterator;
 
 import com.nucleon.entity.ChineseCharacter;
 import com.nucleon.entity.Idiom;
@@ -39,8 +39,8 @@ public class RefereeSystem extends GameFlow{
     * 1.根据成语的最后一个字,在成语表中查找所有可接龙的成语
     * 2.从中找出符合当前难度要求(是否允许同音,当前难度数是多少)的成语,并返回
     */
-        if(findValidIdiom(cword,currentDifficulty,allowFurtherSearch) != null){
-            return findValidIdiom(cword,currentDifficulty,allowFurtherSearch);
+        if(findValidIdiom(cword) != null){
+            return findValidIdiom(cword);
         }else{
             System.out.println("该成语无法接龙,接下来将会杀龙.随机给出一个成语,然后游戏继续");
             if(pickRandomIdiom() != null){
@@ -64,7 +64,7 @@ public class RefereeSystem extends GameFlow{
         Idiom candidate = wordIdiomMap.get(idiomString);
         usedIdioms.add(candidate);
         ChineseCharacter cword = candidate.getCharacterList().get(candidate.getCharacterList().size()-1);//获取成语的最后一个字
-        Idiom validIdiom = (findValidIdiom(cword,currentDifficulty,allowFurtherSearch));
+        Idiom validIdiom = (findValidIdiom(cword));
         if( validIdiom != null){
             return validIdiom;
         }else{
@@ -141,7 +141,7 @@ public class RefereeSystem extends GameFlow{
         return validIdioms;
     }
 
-    private Idiom findValidIdiom(final ChineseCharacter cword,int currentDifficulty,boolean allowFurtherSearch) {//传入的word是成语的最后一个字
+    private Idiom findValidIdiom(final ChineseCharacter cword) {//传入的word是成语的最后一个字
         if (cword == null) {
             return null;
         }
@@ -156,6 +156,17 @@ public class RefereeSystem extends GameFlow{
                         validIdioms.addAll(findValidIdioms(zi));
                     }
                 }
+            }
+            if (!challengeMode) {
+                //去掉validIdioms中不常用的成语isCommonlyUsed为false的成语
+                Iterator<Idiom> iterator = validIdioms.iterator();
+                while (iterator.hasNext()) {
+                    Idiom idiom = iterator.next();
+                    if (!idiom.getCommonlyUsed()) {
+                        iterator.remove();
+                    }
+                }
+ 
             }
             //找到Idiom.allowHomophoneNum和currentDifficulty差距最小的成语
             Idiom bestIdiom = null;
