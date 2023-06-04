@@ -1,62 +1,39 @@
-package com.nucleon.game;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
-import java.util.Set;
-
+package com.nucleon;
+import org.junit.Test;
+import static org.junit.Assert.*;
+import com.nucleon.util.DataUtil;
+import com.nucleon.util.PinyinHelper;
 import com.alibaba.fastjson.JSON;
 import com.nucleon.entity.ChineseCharacter;
 import com.nucleon.entity.Idiom;
-import com.nucleon.util.DataUtil;
-import com.nucleon.util.PinyinHelper;
+import com.nucleon.game.GameFlow;
 
-public class GameFlow {
-    protected Scanner sc = new Scanner(System.in);
-    GameFlow gameFlow;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
-    // 存储某个拼音(无声调)对应的所有汉字,该汉字是成语表中所有成语的首字
-    // 如{"wang":['汪','王','网','忘',...]}
-    protected static Map<String, Set<Character>> pinyinZiListMap = new HashMap<>();
-
-    // 存储以某个汉字开头的所有成语
-    // 如以'我'开头的成语：{‘我’：["我黼子佩","我负子戴","我见犹怜","我武惟扬","我心如秤","我行我素","我醉欲眠"]}
-    protected static Map<Character, List<String>> initialWordListMap = new HashMap<>();
-
-    // 存储每个成语对应的详细信息
-    // 如{"我行我素":{"abbreviation":"wxws","derivation":...,"example":...,"explanation":...,"CharacterList":[...]}}
-    protected static Map<String, Idiom> wordIdiomMap = new HashMap<>();
-
-    //存储游戏中已经使用过的成语
-    //如{"我行我素","我见犹怜",...}
-    protected static Set<Idiom> usedIdioms = new HashSet<>();
-
-    public GameFlow() {
-    }
-
-    public GameFlow(int type) {
-        if (type == 1) {
-            gameFlow = new Dict();
-        } else {
-            gameFlow = new SolitaireGame();
+import com.nucleon.entity.Idiom;
+public class DataUtilTest extends GameFlow{
+    @Test
+    public void testReadData() {
+  
+        String jsonString = DataUtil.readData("/idiom.json");
+        
+        assertNotNull(jsonString);
+        List<Idiom> idioms = null;
+        try {
+            idioms = JSON.parseArray(jsonString, Idiom.class);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        assertNotNull(idioms);
+        //取出第一条成语,查看其word项目是不是"阿鼻地狱"
+        Idiom idiom = idioms.get(0);
+        assertEquals("阿鼻地狱", idiom.getWord());
     }
-
-    public void startGame() {
-        // 读取数据文件
-        loadData();
-        // 选择游戏，如果gameFlow不为null则跳过选择
-        if (gameFlow == null) {
-            selectGame();//根据用户输入选择游戏类型决定实例化哪个子类
-        }
-        // 进入游戏主要流程(包括游戏前的准备和游戏过程)
-        mainFlow();//这里的mainFlow()是抽象方法,调用的是子类,由子类实现
-    }
-
-
+    @Test
     public void loadData() {
         String data = DataUtil.readData("/idiom.json");
         String commonData = DataUtil.readData("/common_idiom.json");
@@ -218,39 +195,5 @@ public class GameFlow {
         idiom.setAllowHomophoneNum(allowHomophoneNum);
         //System.out.println(idiom.getWord()+"可同音个数处理完毕!"+idiom.getAllowHomophoneNum());
     }
-
-    private void selectGame() {//选择游戏
-        System.out.println("请选择游戏: 1-成语词典 2-成语接龙");
-        System.out.print(">>>");
-        String mode = sc.nextLine();
-        if ("1".equals(mode)) {
-            gameFlow = new Dict();
-        } else {
-            gameFlow = new SolitaireGame();
-        }
-    }
-
-    protected void exit() {//退出游戏
-        sc.close();
-        System.exit(0);
-    }
-
-    protected void mainFlow() {//进入游戏主要流程
-        if (gameFlow != null) {
-            gameFlow.mainFlow();
-        }
-    }
-    //以下是对外提供的方法,调取静态成员
-    public static Map<String, Idiom> getWordIdiomMap() {
-        return wordIdiomMap;
-    }
-
-    public static Map<Character, List<String>> getInitialWordListMap() {
-        return initialWordListMap;
-    }
-
-    public static Map<String, Set<Character>> getPinyinZiListMap() {
-        return pinyinZiListMap;
-    }
-
 }
+

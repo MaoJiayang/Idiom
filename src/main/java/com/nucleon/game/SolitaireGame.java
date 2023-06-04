@@ -43,14 +43,21 @@ public class SolitaireGame extends GameFlow {
          *       如果该成语可以接龙的个数为0,则杀龙,输出提示信息,并随机挑一个没被使用过的新词重新开始接龙.
          * 7.接受用户的接龙成语,如果用户选择需要提示,则给用户提供一个可接龙数多的成语作为提示.重复2-7步骤,直到用户输入exit
          */
-        //TODO:完成游戏主要流程
         //1.用户输入一个成语作为开头
         System.out.println("请输入一个成语作为开头：");
         String idiom = sc.nextLine();
+        if ("exit".equals(idiom)) {
+            System.out.println("游戏结束");
+            return;
+        }
         //2.判断该成语是否合法
-        if (!RefereeSystem.isValidIdiom(idiom)) {
+        while (!RefereeSystem.isValidIdiom(idiom)) {
             System.out.println("您输入的成语被使用过或不存在，请重新输入：");
             idiom = sc.nextLine();
+            if ("exit".equals(idiom)) {
+            System.out.println("游戏结束");
+            return;
+        }
         }
         //3.将用户输入成语加入已使用成语列表
         RefereeSystem.updateUsedIdioms(idiom);
@@ -59,6 +66,15 @@ public class SolitaireGame extends GameFlow {
         System.out.println("电脑回合：" + computerIdiom);
         //5.接受用户的接龙成语,如果用户选择需要提示,则给用户提供一个可接龙的成语作为提示.重复2-7步骤,直到用户输入exit
         while (true) {
+            //难度自减100
+            int currentDifficulty = RefereeSystem.getCurrentDifficulty();
+            if (currentDifficulty < 100){
+                RefereeSystem.setCurrentDifficulty(0);
+            }
+            else{
+                RefereeSystem.setCurrentDifficulty(currentDifficulty - 100);
+            }
+            
             System.out.println("请输入一个成语：");
             String userAnswer = sc.nextLine();
             if ("exit".equals(userAnswer)) {
@@ -66,20 +82,22 @@ public class SolitaireGame extends GameFlow {
                 break;
             }
             //6.判断该成语是否合法
-            if (!RefereeSystem.isValidIdiom(userAnswer)) {
+            while (!RefereeSystem.isValidIdiom(userAnswer)) {
                 System.out.println("您输入的成语被使用过或不存在，请重新输入：");
                 userAnswer = sc.nextLine();
+                if ("exit".equals(idiom)) {
+                System.out.println("游戏结束");
+                return;
+                }
             }
             //8.将用户输入成语加入已使用成语列表
             RefereeSystem.updateUsedIdioms(userAnswer);
             //9.查找符合难度要求的,未被使用过的成语作为电脑回合的成语,展示该成语,并加入已使用成语列表.
             computerIdiom = RefereeSystem.doOneRound(userAnswer);
             System.out.println("电脑回合：" + computerIdiom);
-        }
-        
+            //TODO:娱乐模式没做;两个模式的提示没做
+        }    
     }
-
-
 
     @Override
     protected void mainFlow() {

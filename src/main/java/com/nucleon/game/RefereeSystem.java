@@ -19,6 +19,7 @@ public class RefereeSystem extends GameFlow{
         //是否允许同音不同调
         private boolean allowFurtherSearch;
         private int currentDifficulty = 0;//当前难度,代表的是最大可接龙数
+        private int availableHintCount = 3;//可用提示次数
 
     RefereeSystem(boolean allowFurtherSearch, boolean challengeMode) {
         this.allowFurtherSearch = allowFurtherSearch;
@@ -26,7 +27,7 @@ public class RefereeSystem extends GameFlow{
         if (challengeMode) {
             currentDifficulty = 700;//挑战模式下,难度为700,即初始最大可接龙数为700
         }else {
-            currentDifficulty = 32767;//最大值,不限制
+            currentDifficulty = Integer.MAX_VALUE;//最大值,不限制
         }
     }
 
@@ -62,9 +63,10 @@ public class RefereeSystem extends GameFlow{
     */
         Idiom candidate = wordIdiomMap.get(idiomString);
         usedIdioms.add(candidate);
-        ChineseCharacter cword = candidate.getCharacterList().get(candidate.getCharacterList().size()-1);
-        if(findValidIdiom(cword,currentDifficulty,allowFurtherSearch) != null){
-            return findValidIdiom(cword,currentDifficulty,allowFurtherSearch);
+        ChineseCharacter cword = candidate.getCharacterList().get(candidate.getCharacterList().size()-1);//获取成语的最后一个字
+        Idiom validIdiom = (findValidIdiom(cword,currentDifficulty,allowFurtherSearch));
+        if( validIdiom != null){
+            return validIdiom;
         }else{
             System.out.println("该成语无法接龙,接下来将会杀龙.随机给出一个成语,然后游戏继续");
             //也许之后杀龙可以加一分?

@@ -1,36 +1,22 @@
 package com.nucleon.util;
-import com.nucleon.Main;
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 public class DataUtil {
     public static String readData(String fileName) {
-        InputStream in = Main.class.getClassLoader().getResourceAsStream(fileName);
-        if (in == null) {
-            return null;
-        }
-        BufferedReader reader = null;
+        String jsonString = null;
         try {
-            StringBuilder sb = new StringBuilder();
-            reader = new BufferedReader(new InputStreamReader(in));
-            String line = reader.readLine();
-            while (line != null) {
-                sb.append(line);
-                line = reader.readLine();
-            }
-            return sb.toString();
-        } catch (Exception e) {
+            InputStream inputStream = DataUtil.class.getResourceAsStream(fileName);
+            jsonString = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
+        } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            if (reader != null) {
-                try {
-                    reader.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
         }
-        return null;
+        if (jsonString == null) {
+            throw new RuntimeException("读取数据失败:错误出现在DataUtil.readData()");
+        }
+        else{
+            return jsonString;
+        }
+        
     }
 }
