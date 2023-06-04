@@ -1,11 +1,5 @@
 package com.nucleon.game;
 
-import com.alibaba.fastjson.JSON;
-import com.nucleon.entity.ChineseCharacter;
-import com.nucleon.entity.Idiom;
-import com.nucleon.util.DataUtil;
-import com.nucleon.util.PinyinHelper;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -13,6 +7,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
+
+import com.alibaba.fastjson.JSON;
+import com.nucleon.entity.ChineseCharacter;
+import com.nucleon.entity.Idiom;
+import com.nucleon.util.DataUtil;
+import com.nucleon.util.PinyinHelper;
 
 public class GameFlow {
     protected Scanner sc = new Scanner(System.in);
@@ -31,8 +31,8 @@ public class GameFlow {
     protected static Map<String, Idiom> wordIdiomMap = new HashMap<>();
 
     //存储游戏中已经使用过的成语
-    //如{"我行我素(对象)":true,"我见犹怜(对象)":true,...}
-    protected static Map<Idiom, Boolean> usedWordMap = new HashMap<>();
+    //如{"我行我素","我见犹怜",...}
+    protected static Set<Idiom> usedIdioms = new HashSet<>();
 
     public GameFlow() {
     }
@@ -50,10 +50,10 @@ public class GameFlow {
         loadData();
         // 选择游戏，如果gameFlow不为null则跳过选择
         if (gameFlow == null) {
-            selectGame();
+            selectGame();//根据用户输入选择游戏类型决定实例化哪个子类
         }
-        // 进入游戏主要流程
-        mainFlow();
+        // 进入游戏主要流程(包括游戏前的准备和游戏过程)
+        mainFlow();//这里的mainFlow()是抽象方法,调用的是子类,由子类实现
     }
 
 
@@ -67,8 +67,8 @@ public class GameFlow {
          * 4.生成wordIdiomMap,存储每个成语对应的详细信息
          * 5.初始化idioms对象的某个成语在全量成语中的可接龙成语个数属性,分为不允许同音和允许同音两种情况
          */
-        String data = DataUtil.readData("idiom.json");
-        String commonData = DataUtil.readData("common_idiom.json");
+        String data = DataUtil.readData("/idiom.json");
+        String commonData = DataUtil.readData("/common_idiom.json");
         if (data == null || commonData == null) {
             System.err.println("无法读取数据文件!");
             exit();
