@@ -1,7 +1,5 @@
 package com.nucleon.game;
 
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -97,11 +95,9 @@ public class GameFlow {
         DataUtil.writeWordIdiomMapToFile(wordIdiomMap, "word_idiom_map.txt");
 
     }
-
+/* 
     private List<Idiom> parseIdioms(String data) {
-        /*
-         * 将json字符串转换为List<Idiom>对象
-         */
+
         try {
             return JSON.parseArray(data, Idiom.class);
         } catch (Exception e) {
@@ -109,7 +105,7 @@ public class GameFlow {
             return null;
         }
     }
-
+*/
     private void processIdiom(Idiom idiom, List<Idiom> commonIdioms) {
         /*
          * 处理每个成语对象,将其常用性设置为true或false
