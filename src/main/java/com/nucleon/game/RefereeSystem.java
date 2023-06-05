@@ -84,9 +84,9 @@ public class RefereeSystem extends GameFlow{
         float score = 0;
         for (Idiom idiom : usedIdioms) {
             if (allowFurtherSearch) {
-                score += 1/idiom.getAllowHomophoneNum()+1;//成语的可接龙数量越多,分数越低,+1是为了防止分母为0
+                score += 1/(idiom.getAllowHomophoneNum()+1);//成语的可接龙数量越多,分数越低,+1是为了防止分母为0
             } else {
-                score += 1/idiom.getNotAllowHomophoneNum()+1;//成语的可接龙数量越多,分数越低
+                score += 1/(idiom.getNotAllowHomophoneNum()+1);//成语的可接龙数量越多,分数越低
             }
         }
         return score;
