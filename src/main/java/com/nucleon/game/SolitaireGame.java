@@ -76,18 +76,22 @@ public class SolitaireGame extends GameFlow {
                 RefereeSystem.setCurrentDifficulty(currentDifficulty - 100);
             }
             
-            System.out.println("请输入一个成语：");
+            System.out.println("请输入一个成语。输入exit退出，输入hint提示：");
             String userAnswer = sc.nextLine();
             if ("exit".equals(userAnswer)) {
-                System.out.println("游戏结束");
+                System.out.println("游戏结束，您的得分为："+ RefereeSystem.getCurrentScore());
                 break;
+            }
+            if ("hint".equals(userAnswer)) {
+                System.out.println("提示：" + RefereeSystem.doOneRound(computerIdiom.getWord()));
+                continue;
             }
             //6.判断该成语是否合法
             while (!RefereeSystem.isValidIdiom(userAnswer)) {
                 System.out.println("您输入的成语被使用过或不存在，请重新输入：");
                 userAnswer = sc.nextLine();
                 if ("exit".equals(idiom)) {
-                System.out.println("游戏结束");
+                System.out.println("游戏结束，您的得分为："+ RefereeSystem.getCurrentScore());
                 return;
                 }
             }

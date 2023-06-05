@@ -79,7 +79,7 @@ public class RefereeSystem extends GameFlow{
            }
         }
     }
-    public float getCurrentScore(boolean allowFurtherSearch) {
+    public float getCurrentScore() {
         //系统的主要方法之一,通过已经使用的成语的可接龙数量计算当前分数,
         float score = 0;
         for (Idiom idiom : usedIdioms) {
@@ -188,6 +188,9 @@ public class RefereeSystem extends GameFlow{
         }else{
             if (validIdioms != null) {
                 validIdioms.removeAll(usedIdioms);
+            }
+            else{
+                return null;
             }
             //找到Idiom.notAllowHomophoneNum和currentDifficulty差距最小的成语
             Idiom bestIdiom = null;
