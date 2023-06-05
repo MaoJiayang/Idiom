@@ -1,13 +1,18 @@
 package com.nucleon.game;
 
+import java.util.HashSet;
+
 import com.nucleon.entity.Idiom;
 
 public class SolitaireGame extends GameFlow {
 
     private RefereeSystem RefereeSystem;
-
+    //创建一个字符列表以存储提示成语
+    private HashSet<String> hintIdioms;
+    
     protected SolitaireGame() {
         System.out.println("欢迎来到成语接龙! exit退出");
+        hintIdioms = new HashSet<>();
     }
 
     //选择难度
@@ -73,8 +78,10 @@ public class SolitaireGame extends GameFlow {
                 System.out.println("游戏结束，您的得分为："+ RefereeSystem.getCurrentScore());
                 break;
             }
+            
             if ("hint".equals(userAnswer) && RefereeSystem.getAvailableHintCount() > 0) {
                 String hintIdiom = RefereeSystem.doOneRound(computerIdiom.getWord()).getWord();
+                hintIdioms.add(hintIdiom);
                 System.out.println("提示：" + hintIdiom);
                 RefereeSystem.setAvailableHintCount(RefereeSystem.getAvailableHintCount() - 1);
                 RefereeSystem.updateUsedIdioms(hintIdiom);
@@ -83,15 +90,18 @@ public class SolitaireGame extends GameFlow {
             }
             //TODO:复用提示功能.应该重写一个提示方法
             //6.判断该成语是否合法
-            if (!RefereeSystem.isValidIdiom(userAnswer)) {
+            if (!RefereeSystem.isValidIdiom(userAnswer) && !hintIdioms.contains(userAnswer)) {//如果没有使用过提示且用户输入的成语不合法(提示成语一定是合法的)
                 System.out.println("您输入的成语被使用过或不存在，请重新输入");
                 continue;//回到循环头,重新输入
             }
-            //8.将用户输入成语加入已使用成语列表
-            RefereeSystem.updateUsedIdioms(userAnswer);
+            //8.将用户输入成语加入已使用成语列表(提示成语在出现提示的时候已经加入过了)
+            if (!hintIdioms.contains(userAnswer)) {
+                RefereeSystem.updateUsedIdioms(userAnswer);
+            }
             //9.查找符合难度要求的,未被使用过的成语作为电脑回合的成语,展示该成语,并加入已使用成语列表.
             computerIdiom = RefereeSystem.doOneRound(userAnswer);
             RefereeSystem.updateUsedIdioms(computerIdiom.getWord());
+            System.out.println("当前分数：" + RefereeSystem.getCurrentScore());
             System.out.println("电脑回合：" + computerIdiom.getWord());
             //难度自减100
             int currentDifficulty = RefereeSystem.getCurrentDifficulty();

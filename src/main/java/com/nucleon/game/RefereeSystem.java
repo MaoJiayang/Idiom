@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.Iterator;
+import java.lang.Math;
 
 import com.nucleon.entity.ChineseCharacter;
 import com.nucleon.entity.Idiom;
@@ -79,17 +80,18 @@ public class RefereeSystem extends GameFlow{
            }
         }
     }
-    public float getCurrentScore() {
+    public double getCurrentScore() {
         //系统的主要方法之一,通过已经使用的成语的可接龙数量计算当前分数,
         float score = 0;
         for (Idiom idiom : usedIdioms) {
             if (allowFurtherSearch) {
-                score += 1/(idiom.getAllowHomophoneNum()+1);//成语的可接龙数量越多,分数越低,+1是为了防止分母为0
+                score += 600/(idiom.getAllowHomophoneNum()+1);//对于每个成语,成语的可接龙数量越多,分数越低,+1是为了防止分母为0
             } else {
-                score += 1/(idiom.getNotAllowHomophoneNum()+1);//成语的可接龙数量越多,分数越低
+                score += 600/(idiom.getNotAllowHomophoneNum()+1);
             }
         }
-        return score;
+        score += Math.pow(1.5, usedIdioms.size()+1);//再加上接龙长度得分
+        return score;//分数越高,2的幂次方越大,且分数的增加速度越快
     }
     public boolean isValidIdiom(final String idiom) {
         //系统的主要方法之一,判断用户输入的成语是否合法.
