@@ -19,15 +19,15 @@ public class GameFlow {
     protected Scanner sc = new Scanner(System.in);
     GameFlow gameFlow;
 
-    // 存储某个拼音(无声调)对应的所有汉字,该汉字是成语表中所有成语的首字
+    // 存储某个拼音(无声调)对应的所有汉字,该汉字是成语表中所有成语的首字,用于同音搜索
     // 如{"wang":['汪','王','网','忘',...]}
     protected static Map<String, Set<Character>> pinyinZiListMap = new HashMap<>();
 
-    // 存储以某个汉字开头的所有成语
+    // 存储以某个汉字开头的所有成语,用于首字搜索
     // 如以'我'开头的成语：{‘我’：["我黼子佩","我负子戴","我见犹怜","我武惟扬","我心如秤","我行我素","我醉欲眠"]}
     protected static Map<Character, List<String>> initialWordListMap = new HashMap<>();
 
-    // 存储每个成语对应的详细信息
+    // 存储每个成语对应的详细信息,用于通过成语查找详细信息
     // 如{"我行我素":{"abbreviation":"wxws","derivation":...,"example":...,"explanation":...,"CharacterList":[...]}}
     protected static Map<String, Idiom> wordIdiomMap = new HashMap<>();
 

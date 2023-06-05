@@ -21,14 +21,14 @@ public class SolitaireGame extends GameFlow {
         System.out.print(">>>");
         String d = sc.nextLine();
         if ("1".equals(d)) {
-            System.out.println("【娱乐模式】：\n请选择接龙模式：1-普通模式 2-同音模式");
+            System.out.println("【娱乐模式】：\n请选择接龙模式：1-普通同字接龙 2-允许同音接龙");
             if ("1".equals(sc.nextLine())) {
                 RefereeSystem = new RefereeSystem(false,false);
             }else {
                 RefereeSystem = new RefereeSystem(true,false);
             }
         }else {
-            System.out.println("【挑战模式】：\n请选择接龙模式：1-普通模式 2-同音模式");
+            System.out.println("【挑战模式】：\n请选择接龙模式：1-普通同字接龙 2-允许同音接龙");
             if ("1".equals(sc.nextLine())) {
                 RefereeSystem = new RefereeSystem(false,true);
             } else {
@@ -49,7 +49,7 @@ public class SolitaireGame extends GameFlow {
          * 7.接受用户的接龙成语,如果用户选择需要提示,则给用户提供一个可接龙数多的成语作为提示.重复2-7步骤,直到用户输入exit
          */
         //1.用户输入一个成语作为开头
-        System.out.println("请输入一个成语作为开头：");
+        System.out.println("请输入一个成语作为龙头：");
         String idiom = sc.nextLine();
         if ("exit".equals(idiom)) {
             System.out.println("游戏结束");
@@ -85,7 +85,7 @@ public class SolitaireGame extends GameFlow {
                 System.out.println("提示：" + hintIdiom);
                 RefereeSystem.setAvailableHintCount(RefereeSystem.getAvailableHintCount() - 1);
                 RefereeSystem.updateUsedIdioms(hintIdiom);
-                System.out.println("剩余提示次数:" + RefereeSystem.getAvailableHintCount());
+                System.out.println("剩余提示次数:" + RefereeSystem.getAvailableHintCount()+ "\n");
                 continue;
             }
             //TODO:复用提示功能.应该重写一个提示方法
@@ -102,7 +102,7 @@ public class SolitaireGame extends GameFlow {
             computerIdiom = RefereeSystem.doOneRound(userAnswer);
             RefereeSystem.updateUsedIdioms(computerIdiom.getWord());
             System.out.println("当前分数：" + RefereeSystem.getCurrentScore());
-            System.out.println("电脑回合：" + computerIdiom.getWord());
+            System.out.println("电脑回合：" + computerIdiom.getWord() + "\n");
             //难度自减100
             int currentDifficulty = RefereeSystem.getCurrentDifficulty();
             if (currentDifficulty < 100){
