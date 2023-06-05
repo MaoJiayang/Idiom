@@ -9,13 +9,12 @@ import com.nucleon.entity.Idiom;
 import com.nucleon.game.GameFlow;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.Iterator;
 
-import com.nucleon.entity.Idiom;
+
 public class DataUtilTest extends GameFlow{
     @Test
     public void testReadData() {
@@ -73,11 +72,9 @@ public class DataUtilTest extends GameFlow{
         DataUtil.writeWordIdiomMapToFile(wordIdiomMap, "word_idiom_map.txt");
 
     }
-
+/* 
     private List<Idiom> parseIdioms(String data) {
-        /*
-         * 将json字符串转换为List<Idiom>对象
-         */
+
         try {
             return JSON.parseArray(data, Idiom.class);
         } catch (Exception e) {
@@ -85,7 +82,7 @@ public class DataUtilTest extends GameFlow{
             return null;
         }
     }
-
+*/
     private void processIdiom(Idiom idiom, List<Idiom> commonIdioms) {
         /*
          * 处理每个成语对象,将其常用性设置为true或false
