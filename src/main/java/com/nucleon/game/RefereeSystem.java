@@ -157,6 +157,8 @@ public class RefereeSystem extends GameFlow{
                     }
                 }
             }
+            //去掉已经使用过的成语
+            validIdioms.removeAll(usedIdioms);
             if (!challengeMode) {
                 //去掉validIdioms中不常用的成语isCommonlyUsed为false的成语
                 Iterator<Idiom> iterator = validIdioms.iterator();
@@ -180,6 +182,7 @@ public class RefereeSystem extends GameFlow{
             }
             return bestIdiom;
         }else{
+            validIdioms.removeAll(usedIdioms);
             //找到Idiom.notAllowHomophoneNum和currentDifficulty差距最小的成语
             Idiom bestIdiom = null;
             int minDiff = Integer.MAX_VALUE;
