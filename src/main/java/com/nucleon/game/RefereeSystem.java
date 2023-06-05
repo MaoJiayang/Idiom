@@ -153,6 +153,9 @@ public class RefereeSystem extends GameFlow{
             if (ziSet != null) {
                 for (Character zi : ziSet) {
                     if (zi != word) {
+                        if (validIdioms == null) {
+                            validIdioms = new HashSet<>();
+                        }
                         validIdioms.addAll(findValidIdioms(zi));
                     }
                 }
