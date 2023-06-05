@@ -76,16 +76,19 @@ public class SolitaireGame extends GameFlow {
                 RefereeSystem.setCurrentDifficulty(currentDifficulty - 100);
             }
             
-            System.out.println("请输入一个成语。输入exit退出，输入hint提示：");
+            System.out.println("输入exit退出，输入hint提示.剩余提示次数" + RefereeSystem.getAvailableHintCount() + "\n请输入一个成语:");
             String userAnswer = sc.nextLine();
             if ("exit".equals(userAnswer)) {
                 System.out.println("游戏结束，您的得分为："+ RefereeSystem.getCurrentScore());
                 break;
             }
-            if ("hint".equals(userAnswer)) {
-                System.out.println("提示：" + RefereeSystem.doOneRound(computerIdiom.getWord()));
+            if ("hint".equals(userAnswer) && RefereeSystem.getAvailableHintCount() > 0) {
+                System.out.println("提示：" + RefereeSystem.doOneRound(computerIdiom.getWord()).getWord());
+                RefereeSystem.setAvailableHintCount(RefereeSystem.getAvailableHintCount() - 1);
+                System.out.println("剩余提示次数:" + RefereeSystem.getAvailableHintCount());
                 continue;
             }
+            //TODO:复用提示功能.应该重写一个提示方法
             //6.判断该成语是否合法
             while (!RefereeSystem.isValidIdiom(userAnswer)) {
                 System.out.println("您输入的成语被使用过或不存在，请重新输入：");
@@ -101,7 +104,6 @@ public class SolitaireGame extends GameFlow {
             computerIdiom = RefereeSystem.doOneRound(userAnswer);
             RefereeSystem.updateUsedIdioms(computerIdiom.getWord());
             System.out.println("电脑回合：" + computerIdiom.getWord());
-            //TODO:娱乐模式没做;两个模式的提示没做
         }    
     }
 

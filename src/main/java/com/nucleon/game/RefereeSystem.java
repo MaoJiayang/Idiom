@@ -224,5 +224,11 @@ public class RefereeSystem extends GameFlow{
         int idx = (int) (idioms.size() * Math.random());
         return idioms.get(idx).getWord();
     }
+    public void setAvailableHintCount(int hintCount) {
+        this.availableHintCount = hintCount;
+    }
+    public int getAvailableHintCount() {
+        return availableHintCount;
+    }
  
 }
