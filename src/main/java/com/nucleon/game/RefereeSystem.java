@@ -65,9 +65,9 @@ public class RefereeSystem extends GameFlow{
         float score = 0;
         for (Idiom idiom : usedIdioms) {
             if (allowFurtherSearch) {
-                score += 600/(idiom.getAllowHomophoneNum()+1);//对于每个成语,成语的可接龙数量越多,分数越低,+1是为了防止分母为0
+                score += 60/(idiom.getAllowHomophoneNum()+1);//对于每个成语,成语的可接龙数量越多,分数越低,+1是为了防止分母为0
             } else {
-                score += 600/(idiom.getNotAllowHomophoneNum()+1);
+                score += 60/(idiom.getNotAllowHomophoneNum()+1);
             }
         }
         score += Math.pow(1.5, usedIdioms.size()+1) + 1000*killNum;//再加上接龙长度得分和击杀得分

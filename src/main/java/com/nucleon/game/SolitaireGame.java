@@ -119,5 +119,5 @@ public class SolitaireGame extends GameFlow {
         selectRefereeSystem();
 
         doMainFlow();
-    }  
+    }
 }
