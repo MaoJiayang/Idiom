@@ -146,7 +146,8 @@ public class RefereeSystem extends GameFlow{
             return null;
         }
         Character word = cword.getZi();
-        Set<Idiom> validIdioms = findValidIdioms(word);
+        Set<Idiom> validIdioms = new HashSet<>();
+        validIdioms = findValidIdioms(word);
         if(allowFurtherSearch){
             String pinyin = cword.getPinyin();
             Set<Character> ziSet = pinyinZiListMap.get(pinyin);
