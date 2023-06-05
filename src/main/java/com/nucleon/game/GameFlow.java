@@ -200,11 +200,11 @@ public class GameFlow {
     }
 
     private void calculateNotAllowHomophoneNum(Idiom idiom) {
-        if (idiom.getCharacterList() == null) {
-            idiom.setNotAllowHomophoneNum(0);
-            return;
-        }
-        char lastChar = idiom.getCharacterList().get(idiom.getCharacterList().size() - 1).getZi();
+        //if (idiom.getCharacterList() == null) {
+        //    idiom.setNotAllowHomophoneNum(0);
+        //    return;
+        //}
+        Character lastChar = idiom.getCharacterList().get(idiom.getCharacterList().size() - 1).getZi();
         if (initialWordListMap.get(lastChar) == null || initialWordListMap.get(lastChar).size() < 1) {
             idiom.setNotAllowHomophoneNum(0);
             return;
@@ -226,7 +226,7 @@ public class GameFlow {
             return;
         }
         int allowHomophoneNum = pinyinZiListMap.get(pinyinWithoutTone).size() - 1;
-        idiom.setAllowHomophoneNum(allowHomophoneNum);
+        idiom.setAllowHomophoneNum(allowHomophoneNum + idiom.getNotAllowHomophoneNum());
         //System.out.println(idiom.getWord()+"可同音个数处理完毕!"+idiom.getAllowHomophoneNum());
     }
 

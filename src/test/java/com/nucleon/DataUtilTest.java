@@ -200,12 +200,12 @@ public class DataUtilTest extends GameFlow{
         }
         ChineseCharacter lastChineseCharacter = idiom.getCharacterList().get(idiom.getCharacterList().size() - 1);
         String pinyinWithoutTone = lastChineseCharacter.getPinyin();
-        if (pinyinZiListMap.get(pinyinWithoutTone) == null || pinyinZiListMap.get(pinyinWithoutTone).size() < 1) {
-            idiom.setAllowHomophoneNum(0);
-            return;
-        }
+        //if (pinyinZiListMap.get(pinyinWithoutTone) == null || pinyinZiListMap.get(pinyinWithoutTone).size() < 1) {
+        //    idiom.setAllowHomophoneNum(0);
+        //    return;
+        //}
         int allowHomophoneNum = pinyinZiListMap.get(pinyinWithoutTone).size() - 1;
-        idiom.setAllowHomophoneNum(allowHomophoneNum);
+        idiom.setAllowHomophoneNum(allowHomophoneNum+idiom.getNotAllowHomophoneNum());
         //System.out.println(idiom.getWord()+"可同音个数处理完毕!"+idiom.getAllowHomophoneNum());
     }
 }
