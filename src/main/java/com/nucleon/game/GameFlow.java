@@ -66,8 +66,8 @@ public class GameFlow {
             System.err.println("无法读取数据文件!");
             exit();
         }
-        List<Idiom> idioms = parseIdioms(data);//将json字符串转换为List<Idiom>对象
-        List<Idiom> commonIdioms = parseIdioms(commonData);//将json字符串转换为List<Idiom>对象
+        List<Idiom> idioms = JSON.parseArray(data,Idiom.class);//将json字符串转换为List<Idiom>对象
+        List<Idiom> commonIdioms = JSON.parseArray(commonData,Idiom.class);//将json字符串转换为List<Idiom>对象
         if (idioms == null || idioms.size() < 1 || commonIdioms == null || commonIdioms.size() < 1) {
             System.err.println("数据文件非法!");
             return;
@@ -83,7 +83,7 @@ public class GameFlow {
             processPinyinZiListMap(idiom);//将每个成语对象的拼音和字列表存入pinyinZiListMap
             processInitialWordListMap(idiom);//将每个成语对象的首字(字符)和成语(字符)存入initialWordListMap
         }
-        System.out.println("数据预处理成功!");
+        System.out.println("数据预处理成功!"+idioms.size());
         calculateHomophoneNum(idioms);//计算每个成语的可接龙数,分为普通接龙数和同音接龙数.该函数中调用了两个私有方法
         System.out.println("可接龙数计算成功!");
         //提取idioms中的成语,将其word,notAllowHomophoneNum,allowHomophoneNum用逗号分割打印为txt文件

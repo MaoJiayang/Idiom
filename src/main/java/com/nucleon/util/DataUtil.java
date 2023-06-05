@@ -31,9 +31,9 @@ public class DataUtil {
          */
         try (FileWriter writer = new FileWriter(filename)) {
             //先写入表头
-            writer.write("word,notAllowHomophoneNum,allowHomophoneNum\n");
+            writer.write("word,notAllowHomophoneNum,allowHomophoneNum,isCommonlyUsed\n");
             for (Idiom idiom : idioms) {
-                String line = idiom.getWord() + "," + idiom.getNotAllowHomophoneNum() + "," + idiom.getAllowHomophoneNum() + "\n";
+                String line = idiom.getWord() + "," + idiom.getNotAllowHomophoneNum() + "," + idiom.getAllowHomophoneNum() + "," + idiom.getCommonlyUsed() + "\n";
                 writer.write(line);
             }
         } catch (IOException e) {

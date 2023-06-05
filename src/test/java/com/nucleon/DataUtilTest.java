@@ -42,8 +42,8 @@ public class DataUtilTest extends GameFlow{
             System.err.println("无法读取数据文件!");
             exit();
         }
-        List<Idiom> idioms = parseIdioms(data);//将json字符串转换为List<Idiom>对象
-        List<Idiom> commonIdioms = parseIdioms(commonData);//将json字符串转换为List<Idiom>对象
+        List<Idiom> idioms = JSON.parseArray(data,Idiom.class);//将json字符串转换为List<Idiom>对象
+        List<Idiom> commonIdioms = JSON.parseArray(commonData,Idiom.class);//将json字符串转换为List<Idiom>对象
         if (idioms == null || idioms.size() < 1 || commonIdioms == null || commonIdioms.size() < 1) {
             System.err.println("数据文件非法!");
             return;
