@@ -186,7 +186,9 @@ public class RefereeSystem extends GameFlow{
             }
             return bestIdiom;
         }else{
-            validIdioms.removeAll(usedIdioms);
+            if (validIdioms != null) {
+                validIdioms.removeAll(usedIdioms);
+            }
             //找到Idiom.notAllowHomophoneNum和currentDifficulty差距最小的成语
             Idiom bestIdiom = null;
             int minDiff = Integer.MAX_VALUE;
