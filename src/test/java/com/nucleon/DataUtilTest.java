@@ -13,6 +13,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.Iterator;
 
 import com.nucleon.entity.Idiom;
 public class DataUtilTest extends GameFlow{
@@ -49,17 +50,20 @@ public class DataUtilTest extends GameFlow{
             return;
         }
         System.out.println("数据文件转换成功!"+idioms.size());
-        for (Idiom idiom : idioms) {
-            processIdiom(idiom, commonIdioms);//处理每个成语对象,将其常用性设置为true或false
-            //如果该成语CharacterList为空,则从idioms里删去该成语
+        int loopNum = 0;
+        Iterator<Idiom> iterator = idioms.iterator();
+        while (iterator.hasNext()) {
+            Idiom idiom = iterator.next();
+            processIdiom(idiom, commonIdioms);
             if (idiom.getCharacterList() == null || idiom.getCharacterList().size() < 1) {
-                idioms.remove(idiom);
-                break;
+                iterator.remove();
+                continue;
             }
-            processPinyinZiListMap(idiom);//将每个成语对象的拼音和字列表存入pinyinZiListMap
-            processInitialWordListMap(idiom);//将每个成语对象的首字(字符)和成语(字符)存入initialWordListMap
+            processPinyinZiListMap(idiom);
+            processInitialWordListMap(idiom);
+            loopNum++;
         }
-        System.out.println("数据预处理成功!");
+        System.out.println("数据预处理成功!"+loopNum);
         calculateHomophoneNum(idioms);//计算每个成语的可接龙数,分为普通接龙数和同音接龙数.该函数中调用了两个私有方法
         System.out.println("可接龙数计算成功!");
         //提取idioms中的成语,将其word,notAllowHomophoneNum,allowHomophoneNum用逗号分割打印为txt文件
@@ -105,14 +109,16 @@ public class DataUtilTest extends GameFlow{
         if (word == null || word.length() < 1 || pinyin == null || pinyin.length() < 1) {
             return;
         }
-        String[] pinyinArr = pinyin.split("[，,\u3000\\s]+");//将拼音字符串按照"，"或空格分割为字符串数组
-        StringBuilder sb = new StringBuilder(word);
-        int index = word.indexOf("，");
-        while (index >= 0) {
-            sb.deleteCharAt(index);
-            word = word.substring(0, index) + word.substring(index + 1);
-            index = word.indexOf("，");
-        }
+
+        //String[] pinyinArr = pinyin.split("[，,\u3000\\s]+");//将拼音字符串按照"，"或空格分割为字符串数组
+        //StringBuilder sb = new StringBuilder(word);
+        //int index = word.indexOf("，");
+        //while (index >= 0) {
+        //    sb.deleteCharAt(index);
+        //    word = word.substring(0, index) + word.substring(index + 1);
+        //    index = word.indexOf("，");
+        //}
+        String[] pinyinArr = pinyin.split(" ");
         List<ChineseCharacter> CharacterList = new ArrayList<>();
         if (word.length() != pinyinArr.length) {
             //如果长度不匹配,return

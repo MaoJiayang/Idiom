@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
@@ -73,17 +74,20 @@ public class GameFlow {
             return;
         }
         System.out.println("数据文件转换成功!"+idioms.size());
-        for (Idiom idiom : idioms) {
-            processIdiom(idiom, commonIdioms);//处理每个成语对象,将其常用性设置为true或false
-            //如果该成语CharacterList为空,则从idioms里删去该成语
+        int loopNum = 0;
+        Iterator<Idiom> iterator = idioms.iterator();
+        while (iterator.hasNext()) {
+            Idiom idiom = iterator.next();
+            processIdiom(idiom, commonIdioms);
             if (idiom.getCharacterList() == null || idiom.getCharacterList().size() < 1) {
-                idioms.remove(idiom);
-                break;
+                iterator.remove();
+                continue;
             }
-            processPinyinZiListMap(idiom);//将每个成语对象的拼音和字列表存入pinyinZiListMap
-            processInitialWordListMap(idiom);//将每个成语对象的首字(字符)和成语(字符)存入initialWordListMap
+            processPinyinZiListMap(idiom);
+            processInitialWordListMap(idiom);
+            loopNum++;
         }
-        System.out.println("数据预处理成功!"+idioms.size());
+        System.out.println("数据预处理成功!"+loopNum);
         calculateHomophoneNum(idioms);//计算每个成语的可接龙数,分为普通接龙数和同音接龙数.该函数中调用了两个私有方法
         System.out.println("可接龙数计算成功!");
         //提取idioms中的成语,将其word,notAllowHomophoneNum,allowHomophoneNum用逗号分割打印为txt文件
@@ -143,15 +147,14 @@ public class GameFlow {
             return; 
         }
 
-            for (int i = 0; i < word.length(); i++) {
-                    ChineseCharacter Character = new ChineseCharacter();
-                    char zi = word.charAt(i);
-                    String pinyinWithoutTone = PinyinHelper.getPinyinWithoutTone(pinyinArr[i]);
-                    Character.setZi(zi);
-                    Character.setPinyin(pinyinWithoutTone);
-                    CharacterList.add(Character);
-            }
-
+        for (int i = 0; i < word.length(); i++) {
+                ChineseCharacter Character = new ChineseCharacter();
+                char zi = word.charAt(i);
+                String pinyinWithoutTone = PinyinHelper.getPinyinWithoutTone(pinyinArr[i]);
+                Character.setZi(zi);
+                Character.setPinyin(pinyinWithoutTone);
+                CharacterList.add(Character);
+        }
         idiom.setCharacterList(CharacterList);
         wordIdiomMap.put(word, idiom);
     }
