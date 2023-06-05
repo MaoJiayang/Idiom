@@ -63,6 +63,7 @@ public class SolitaireGame extends GameFlow {
         RefereeSystem.updateUsedIdioms(idiom);
         //4.查找符合难度要求的,未被使用过的成语作为电脑回合的成语,展示该成语,并加入已使用成语列表.
         Idiom computerIdiom = RefereeSystem.doOneRound(idiom);
+        RefereeSystem.updateUsedIdioms(computerIdiom.getWord());
         System.out.println("电脑回合：" + computerIdiom.getWord());
         //5.接受用户的接龙成语,如果用户选择需要提示,则给用户提供一个可接龙的成语作为提示.重复2-7步骤,直到用户输入exit
         while (true) {
@@ -94,6 +95,7 @@ public class SolitaireGame extends GameFlow {
             RefereeSystem.updateUsedIdioms(userAnswer);
             //9.查找符合难度要求的,未被使用过的成语作为电脑回合的成语,展示该成语,并加入已使用成语列表.
             computerIdiom = RefereeSystem.doOneRound(userAnswer);
+            RefereeSystem.updateUsedIdioms(computerIdiom.getWord());
             System.out.println("电脑回合：" + computerIdiom.getWord());
             //TODO:娱乐模式没做;两个模式的提示没做
         }    
