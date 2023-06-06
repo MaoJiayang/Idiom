@@ -43,7 +43,9 @@ public class RefereeSystem extends GameFlow{
     *提供成语的流程:
     * 1.根据用户输入成语的最后一个字,在成语表中查找所有可接龙的成语
     * 2.从中找出符合当前难度要求(是否允许同音,当前难度数是多少)的接龙成语,并返回
-    */  if (!idiomNotUsed(idiomString)){//如果成语不合法或已经被使用过
+    */  
+    System.out.println("裁判系统中被调用");
+        if (!idiomNotUsed(idiomString)){//如果成语不合法或已经被使用过
             Idiom errorIdiom = new Idiom(404);
             return errorIdiom;
         }

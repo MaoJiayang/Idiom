@@ -96,6 +96,7 @@ public class GameFlow implements GamingLogic{
     }
     @Override
     public Idiom doOneRound(String userIdiom){
+        System.out.println("GameFlow中被调用");
         return gameFlow.doOneRound(userIdiom);
     }
     @Override

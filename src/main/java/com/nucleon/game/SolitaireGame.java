@@ -15,6 +15,7 @@ public class SolitaireGame extends GameFlow {
     }
     @Override
     public Idiom doOneRound(String userIdiom) {
+        System.out.println("Solitaire中被调用");
         return RefereeSystem.doOneRound(userIdiom);
     }
     @Override

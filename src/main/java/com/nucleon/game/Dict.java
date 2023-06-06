@@ -35,6 +35,9 @@ public class Dict extends GameFlow{
 
     }
     public static String parseIdiomToString(Idiom idiom){
+        if(idiom.getState() == 404){
+            return "不存在的成语!";
+        }
         String detailedInfo = "【"+idiom.getWord()+"】\n";
         detailedInfo += "拼音：" + idiom.getPinyin()+"\n";
         detailedInfo += "释义：" + idiom.getExplanation()+"\n";
