@@ -200,10 +200,6 @@ public class GameFlow implements GamingLogic{
     }
 
     private void calculateNotAllowHomophoneNum(Idiom idiom) {
-        //if (idiom.getCharacterList() == null) {
-        //    idiom.setNotAllowHomophoneNum(0);
-        //    return;
-        //}
         Character lastChar = idiom.getCharacterList().get(idiom.getCharacterList().size() - 1).getZi();
         if (initialWordListMap.get(lastChar) == null || initialWordListMap.get(lastChar).size() < 1) {
             idiom.setNotAllowHomophoneNum(0);
@@ -239,17 +235,5 @@ public class GameFlow implements GamingLogic{
         if (gameFlow != null) {
             gameFlow.mainFlow();
         }
-    }
-    //以下是对外提供的方法,调取静态成员
-    public static Map<String, Idiom> getWordIdiomMap() {
-        return wordIdiomMap;
-    }
-
-    public static Map<Character, List<String>> getInitialWordListMap() {
-        return initialWordListMap;
-    }
-
-    public static Map<String, Set<Character>> getPinyinZiListMap() {
-        return pinyinZiListMap;
     }
 }

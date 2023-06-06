@@ -16,10 +16,9 @@ import com.nucleon.entity.Idiom;
  * 裁判系统负责维护游戏流中用到的成员变量,接收信息,判断,返回结果
 */
 public class RefereeSystem extends GameFlow{
-        //游戏模式
-        private boolean challengeMode;
-        //是否允许同音不同调
-        private boolean allowFurtherSearch;
+        
+        private boolean challengeMode;//游戏模式
+        private boolean allowFurtherSearch;//是否允许同音不同调
         private int currentDifficulty = 0;//当前难度,代表的是最大可接龙数
         private int availableHintCount = 3;//可用提示次数
         private int killNum = 0;//当前杀龙数
@@ -49,7 +48,7 @@ public class RefereeSystem extends GameFlow{
             Idiom errorIdiom = new Idiom(404);
             return errorIdiom;
         }
-        if (currentDifficulty < 0){
+        if (currentDifficulty < 0){//每轮难度递减100,如果难度小于0,设为0
             currentDifficulty = 0;
         }
         else currentDifficulty -= 100;
@@ -73,7 +72,6 @@ public class RefereeSystem extends GameFlow{
                 return null;
            }
         }
-
     }
     @Override
     public double getCurrentScore() {
@@ -95,12 +93,6 @@ public class RefereeSystem extends GameFlow{
         if(previousHintIdiom != null ){
             //如果存在上一次提示的成语,将其加到已经使用的成语列表中,保证不重复提示
             usedIdioms.add(previousHintIdiom);
-            //如果上一次提示的成语的第一个字和这次提示的成语的第一个字同字或同音,则输出提示信息
-            //ChineseCharacter lastZi = previousHintIdiom.getCharacterList().get(0);
-            //ChineseCharacter thisZi = helpIdiom.getCharacterList().get(0);
-            //if(lastZi.getPinyin() == thisZi.getPinyin()){
-                //System.out.println("警告:两次提示的成语首字一致或同音,可能是游戏流程中前后两次调用提示输入的成语是一致的.\n如果做的是提示,这不会有问题.如果做的是跳过,这在连续跳过的情况下是一个bug,请注意.");
-            //}
         }
         if (availableHintCount <= 0){
             //如果可用提示次数为0,返回一个404成语
@@ -113,6 +105,11 @@ public class RefereeSystem extends GameFlow{
         ChineseCharacter cword = helpIdiom.getCharacterList().get(helpIdiom.getCharacterList().size()-1);
         //从成语表中找到可接龙的成语
         Idiom hintIdiom = findValidIdiom(cword);
+        if (hintIdiom == null){
+            //如果没有可接龙的成语,返回一个404成语
+            Idiom errorIdiom = new Idiom(404);
+            return errorIdiom;
+        }
         availableHintCount--;//可用提示次数减一
         hintIdiom.setState(availableHintCount);//设置提示成语的状态,向系统传递提示次数
         previousHintIdiom = hintIdiom;//将提示成语设置为上一次提示的成语
@@ -152,37 +149,12 @@ public class RefereeSystem extends GameFlow{
         Idiom candidate = wordIdiomMap.get(idiom);
         usedIdioms.add(candidate);
     }
-    public void updateDifficulty() {
-        //TODO:如果有机会再实现.根据当前分数更新难度:挑战模式下,分数越高难度越大.
-    }
+
     public void setCurrentDifficulty(int currentDifficulty) {
         this.currentDifficulty = currentDifficulty;
     }
     public int getCurrentDifficulty() {
         return currentDifficulty;
-    }
-
-    private Set<Idiom> findValidIdioms(final Character word) {//传入的word是成语的最后一个字
-        /*
-         * 裁判系统内部使用的主要方法.
-         * 根据成语的最后一个字,在成语表中查找所有同字可接龙的成语
-         * return:返回一个Set<Idiom>类型的集合,集合中的成语都是可以接龙的成语
-         */
-        if (word == null) {
-            return null;
-        }
-        List<String> idioms = initialWordListMap.get(word);//根据最后一个字找到成语表中以这个字开头的成语(string)
-        if (idioms == null || idioms.isEmpty()) {
-            return null;
-        }
-        Set<Idiom> validIdioms = new HashSet<>();
-        for (String idiom : idioms) {
-            Idiom candidate = wordIdiomMap.get(idiom);//根据成语找到成语表中的成语(Idiom类型)
-            if (  candidate != null && !usedIdioms.contains(candidate) ) {//如果成语表中有这个成语且Set<Idiom> usedIdioms中不存在这个成语
-                validIdioms.add(candidate);
-            }
-        }
-        return validIdioms;
     }
 
     private Idiom findValidIdiom(final ChineseCharacter cword) {//传入的word是成语的最后一个字
@@ -193,7 +165,8 @@ public class RefereeSystem extends GameFlow{
          * return:返回一个Idiom对象,该成语是与当前难度差距最小的可接龙成语
          */
         if (cword == null) {
-            return null;
+            Idiom errorIdiom = new Idiom(404);
+            return errorIdiom;
         }
         Character word = cword.getZi();
         Set<Idiom> validIdioms = new HashSet<>();
@@ -259,7 +232,6 @@ public class RefereeSystem extends GameFlow{
             }
             //找到Idiom.notAllowHomophoneNum和currentDifficulty差距最小的成语
             Idiom bestIdiom = null;
-            /*insert */
             int minDiff = Integer.MAX_VALUE;
             for (Idiom idiom : validIdioms) {
                 int diff = Math.abs(idiom.getNotAllowHomophoneNum() - currentDifficulty);
@@ -271,8 +243,30 @@ public class RefereeSystem extends GameFlow{
             return bestIdiom;
         }
     }
-    
-    public Idiom pickRandomIdiom() {//随机返回一个成语对象
+    private Set<Idiom> findValidIdioms(final Character word) {//传入的word是成语的最后一个字
+        /*
+         * 裁判系统内部使用的主要方法.
+         * 根据成语的最后一个字,在成语表中查找所有同字可接龙的成语
+         * return:返回一个Set<Idiom>类型的集合,集合中的成语都是可以接龙的成语
+         */
+        if (word == null) {
+            return null;
+        }
+        List<String> idioms = initialWordListMap.get(word);//根据最后一个字找到成语表中以这个字开头的成语(string)
+        if (idioms == null || idioms.isEmpty()) {
+            return null;
+        }
+        Set<Idiom> validIdioms = new HashSet<>();
+        for (String idiom : idioms) {
+            Idiom candidate = wordIdiomMap.get(idiom);//根据成语找到成语表中的成语(Idiom类型)
+            if (  candidate != null && !usedIdioms.contains(candidate) ) {//如果成语表中有这个成语且Set<Idiom> usedIdioms中不存在这个成语
+                validIdioms.add(candidate);
+            }
+        }
+        return validIdioms;
+    }    
+
+    private Idiom pickRandomIdiom() {//随机返回一个成语对象
         List<Idiom> idioms = new ArrayList<>(wordIdiomMap.values());
         idioms.removeAll(usedIdioms);
         if (idioms.isEmpty()) {
@@ -281,23 +275,4 @@ public class RefereeSystem extends GameFlow{
         int idx = (int) (idioms.size() * Math.random());
         return idioms.get(idx);
     }
-    public String pickRandomIdiomString() {//随机返回一个成语的string
-        List<Idiom> idioms = new ArrayList<>(wordIdiomMap.values());
-        idioms.removeAll(usedIdioms);
-        if (idioms.isEmpty()) {
-            return null;
-        }
-        int idx = (int) (idioms.size() * Math.random());
-        return idioms.get(idx).getWord();
-    }
-    public void setAvailableHintCount(int hintCount) {//设置可用提示数
-        this.availableHintCount = hintCount;
-    }
-    public int getAvailableHintCount() {//获取可用提示数
-        return availableHintCount;
-    }
-    public int getKillNum() {//获取击杀数
-        return killNum;
-    }
- 
 }
