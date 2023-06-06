@@ -89,13 +89,16 @@ public class RefereeSystem extends GameFlow{
     }
     @Override 
     public Idiom getHint(String computerIdiom){//调用这个方法,一定要保证调用的成语是存在的.
+        Idiom helpIdiom = wordIdiomMap.get(computerIdiom);
         if(previousHintIdiom != null ){
             //如果存在上一次提示的成语,将其加到已经使用的成语列表中,保证不重复提示
             usedIdioms.add(previousHintIdiom);
             //如果上一次提示的成语的第一个字和这次提示的成语的第一个字同字或同音,则输出提示信息
-            ChineseCharacter lastZi = previousHintIdiom.getCharacterList().get(0);
-            ChineseCharacter thisZi = wordIdiomMap.get(computerIdiom).getCharacterList().get(0);
-            if(lastZi.getPinyin() == thisZi.getPinyin()) System.out.println("警告:两次提示的成语首字一致或同音,可能是游戏流程中前后两次调用提示输入的成语是一致的.这在连续跳过的情况下会导致bug,请注意.");
+            //ChineseCharacter lastZi = previousHintIdiom.getCharacterList().get(0);
+            //ChineseCharacter thisZi = helpIdiom.getCharacterList().get(0);
+            //if(lastZi.getPinyin() == thisZi.getPinyin()){
+                //System.out.println("警告:两次提示的成语首字一致或同音,可能是游戏流程中前后两次调用提示输入的成语是一致的.\n如果做的是提示,这不会有问题.如果做的是跳过,这在连续跳过的情况下是一个bug,请注意.");
+            //}
         }
         if (availableHintCount <= 0){
             //如果可用提示次数为0,返回一个404成语
@@ -104,7 +107,6 @@ public class RefereeSystem extends GameFlow{
         }
         //系统的主要方法之一,根据用户输入的成语,返回一个提示成语
         //从成语表中找到该字符对应的成语
-        Idiom helpIdiom = wordIdiomMap.get(computerIdiom);
         //从成语对象中得到该成语的最后一个字
         ChineseCharacter cword = helpIdiom.getCharacterList().get(helpIdiom.getCharacterList().size()-1);
         //从成语表中找到可接龙的成语
