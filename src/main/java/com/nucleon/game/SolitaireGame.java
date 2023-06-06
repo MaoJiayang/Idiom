@@ -11,6 +11,7 @@ public class SolitaireGame extends GameFlow {
         System.out.println("欢迎来到成语接龙游戏！");
     }
     protected SolitaireGame(Boolean challengeMode,Boolean allowFurtherSearch) {
+        System.out.println("欢迎来到成语接龙游戏！");
         setRefereeSystem(challengeMode,allowFurtherSearch);
     }
     @Override

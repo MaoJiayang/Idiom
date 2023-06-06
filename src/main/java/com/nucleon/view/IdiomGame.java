@@ -91,7 +91,9 @@ public class IdiomGame extends JFrame implements GamingLogic {
                     Idiom hint = getHint(currentIdiom.getWord());
                     if (hint.getState() == 404) {
                         JOptionPane.showMessageDialog(IdiomGame.this, "提示次数已用完");
-                    } else {
+                    }else if(hint.getState() == 403){
+                        JOptionPane.showMessageDialog(IdiomGame.this, "提示这个成语会让我自杀,我才不给你:)");
+                    }else {
                         JOptionPane.showMessageDialog(IdiomGame.this, "提示: " + hint.getWord());
                         currentIdiom = hint;
                     }
@@ -115,6 +117,16 @@ public class IdiomGame extends JFrame implements GamingLogic {
                 boolean challengeMode = challengeModeCheckBox.isSelected();
                 boolean allowFurtherSearch = allowFurtherSearchCheckBox.isSelected();
                 gameSetting(gameTypeComboBox.getSelectedIndex() + 1, challengeMode, allowFurtherSearch);
+            }
+        });
+
+        gameTypeComboBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                boolean challengeMode = challengeModeCheckBox.isSelected();
+                boolean allowFurtherSearch = allowFurtherSearchCheckBox.isSelected();
+                int gameType = gameTypeComboBox.getSelectedIndex() + 1;
+                game.gameSetting(gameType, challengeMode, allowFurtherSearch);
             }
         });
     }

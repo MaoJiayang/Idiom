@@ -84,7 +84,7 @@ public class RefereeSystem extends GameFlow{
                 score += 60/(idiom.getNotAllowHomophoneNum()+1);
             }
         }
-        score += Math.pow(1.5, usedIdioms.size()+1) + 1000*killNum;//再加上接龙长度得分和击杀得分
+        score += Math.pow(1.5, usedIdioms.size()+1) + 1000 * killNum;//再加上接龙长度得分和击杀得分
         return score;//分数越高,2的幂次方越大,且分数的增加速度越快
     }
     @Override 
@@ -106,8 +106,9 @@ public class RefereeSystem extends GameFlow{
         //从成语表中找到可接龙的成语
         Idiom hintIdiom = findValidIdiom(cword);
         if (hintIdiom == null){
-            //如果没有可接龙的成语,返回一个404成语
-            Idiom errorIdiom = new Idiom(404);
+            //如果没有提示的成语,在不考虑三万个成语接龙完毕的情况下,
+            //说明该成语电脑无法接龙.返回一个403成语表示Forbidden
+            Idiom errorIdiom = new Idiom(403);
             return errorIdiom;
         }
         availableHintCount--;//可用提示次数减一
