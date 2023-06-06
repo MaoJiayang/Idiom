@@ -92,6 +92,10 @@ public class RefereeSystem extends GameFlow{
         if(previousHintIdiom != null ){
             //如果存在上一次提示的成语,将其加到已经使用的成语列表中,保证不重复提示
             usedIdioms.add(previousHintIdiom);
+            //如果上一次提示的成语的第一个字和这次提示的成语的第一个字同字或同音,则输出提示信息
+            ChineseCharacter lastZi = previousHintIdiom.getCharacterList().get(0);
+            ChineseCharacter thisZi = wordIdiomMap.get(computerIdiom).getCharacterList().get(0);
+            if(lastZi.getPinyin() == thisZi.getPinyin()) System.out.println("警告:两次提示的成语首字一致或同音,可能是游戏流程中前后两次调用提示输入的成语是一致的.这在连续跳过的情况下会导致bug,请注意.");
         }
         if (availableHintCount <= 0){
             //如果可用提示次数为0,返回一个404成语

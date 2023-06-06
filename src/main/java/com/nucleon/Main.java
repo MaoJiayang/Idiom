@@ -26,7 +26,7 @@ public class Main
         //提示用户选择游戏模式
         game.gameSetting(gameType,challengeMode,allowFurtherSearch);
         //提示用户从键盘输入成语
-        System.out.print("输入龙头>>>");
+        System.out.print("exit退出,skip跳过本轮\n输入龙头>>>");
         String userIdiom = sc.nextLine();
             if ("exit".equals(userIdiom)) {
                 System.out.println("游戏结束");
