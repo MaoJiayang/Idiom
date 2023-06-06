@@ -21,7 +21,13 @@ public class Idiom {
     //允许同音的可接龙成语个数,用于计算分数
     private int allowHomophoneNum;
     private boolean isCommonlyUsed;
+    private int state = 0;//正常状态为0,生成随机龙头时为1
 
+    public Idiom(int state) {
+        this.state = state;//一般情况无需调用这个构造函数.只有在返回异常成语时才需要调用
+    }
+    public Idiom() {
+    }
     public String getWord() {
         return word;
     }
@@ -94,5 +100,11 @@ public class Idiom {
     }
     public boolean getCommonlyUsed() {
         return isCommonlyUsed;
+    }
+    public void setState(int state) {
+        this.state = state;
+    }
+    public int getState() {
+        return state;
     }
 }

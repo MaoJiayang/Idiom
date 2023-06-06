@@ -25,6 +25,23 @@ public class Dict extends GameFlow{
             printIdiom(idiom);
         }
     }
+    @Override
+    public Idiom doOneRound(String userIdiom) {
+            Idiom idiom = wordIdiomMap.get(userIdiom);
+            if (idiom == null) {
+                return null;
+            }
+            return idiom;
+
+    }
+    public static String parseIdiomToString(Idiom idiom){
+        String detailedInfo = "【"+idiom.getWord()+"】\n";
+        detailedInfo += "拼音：" + idiom.getPinyin()+"\n";
+        detailedInfo += "释义：" + idiom.getExplanation()+"\n";
+        detailedInfo += "出处：" + idiom.getDerivation()+"\n";
+        detailedInfo += "举例：" + idiom.getExample()+"\n";
+        return detailedInfo;
+    }
 
     private void printIdiom(final Idiom idiom) {
         System.out.println("【"+idiom.getWord()+"】");
@@ -32,6 +49,15 @@ public class Dict extends GameFlow{
         System.out.println("释义：" + idiom.getExplanation());
         System.out.println("出处：" + idiom.getDerivation());
         System.out.println("举例：" + idiom.getExample());
+    }
+    @Override//对于这一类,这是无用方法
+    public double getCurrentScore() {
+        return 0;
+    }
+    @Override//对于这一类,这是无用方法
+    public Idiom getHint(String computerIdiom) {
+        //返回一个404成语
+        return new Idiom(404);
     }
 }    
 

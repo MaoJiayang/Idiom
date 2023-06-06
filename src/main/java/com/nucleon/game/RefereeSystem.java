@@ -13,7 +13,7 @@ import com.nucleon.entity.Idiom;
 /*
  * 游戏裁判系统,用于控制游戏难度
  * 负责接收游戏流程中的各种信息,并根据游戏难度进行判断,返回对应的结果
- * 裁判系统不应该负责维护游戏流中用到的成员变量,只负责接收信息,判断,返回结果
+ * 裁判系统负责维护游戏流中用到的成员变量,接收信息,判断,返回结果
 */
 public class RefereeSystem extends GameFlow{
         //游戏模式
@@ -22,7 +22,8 @@ public class RefereeSystem extends GameFlow{
         private boolean allowFurtherSearch;
         private int currentDifficulty = 0;//当前难度,代表的是最大可接龙数
         private int availableHintCount = 3;//可用提示次数
-        private int killNum = 0;//当前杀龙术
+        private int killNum = 0;//当前杀龙数
+        private Idiom previousHintIdiom = null;//上一次提示的成语
 
     RefereeSystem(boolean allowFurtherSearch, boolean challengeMode) {
         this.allowFurtherSearch = allowFurtherSearch;
@@ -33,6 +34,7 @@ public class RefereeSystem extends GameFlow{
             currentDifficulty = Integer.MAX_VALUE;//最大值,不限制
         }
     }
+    @Override
     public Idiom doOneRound(final String idiomString){
     /* 
     * 裁判系统的主要方法之一
@@ -41,25 +43,37 @@ public class RefereeSystem extends GameFlow{
     *提供成语的流程:
     * 1.根据用户输入成语的最后一个字,在成语表中查找所有可接龙的成语
     * 2.从中找出符合当前难度要求(是否允许同音,当前难度数是多少)的接龙成语,并返回
-    */
+    */  if (!idiomNotUsed(idiomString)){//如果成语不合法或已经被使用过
+            Idiom errorIdiom = new Idiom(404);
+            return errorIdiom;
+        }
+        if (currentDifficulty < 0){
+            currentDifficulty = 0;
+        }
+        else currentDifficulty -= 100;
         Idiom candidate = wordIdiomMap.get(idiomString);
-        usedIdioms.add(candidate);//理论上这里不需要维护,因为在游戏流中已经维护了
+        usedIdioms.add(candidate);
         ChineseCharacter cword = candidate.getCharacterList().get(candidate.getCharacterList().size()-1);//获取成语的最后一个字
         Idiom validIdiom = (findValidIdiom(cword));
         if( validIdiom != null){//如果有可接龙的成语
+            usedIdioms.add(validIdiom);
             return validIdiom;
         }else{
-            System.out.println("提示:该成语无法接龙,奖励1000分\n您成功击杀一条龙.接下来随机给出一个龙头,然后游戏继续\n如果您是输入hint后收到了这条消息,说明给您提供的提示将会逼龙自杀.您可以输入提示成语作为龙头继续接龙");
-            //也许之后杀龙可以加一分?
+            //System.out.println("提示:该成语无法接龙,奖励1000分\n您成功击杀一条龙.接下来随机给出一个龙头,然后游戏继续\n如果您是输入hint后收到了这条消息,说明给您提供的提示将会逼龙自杀.您可以输入提示成语作为龙头继续接龙");
+            killNum++;
             if(pickRandomIdiom() != null){
-                return pickRandomIdiom();
+                Idiom randomIdiom = pickRandomIdiom();
+                randomIdiom.setState(1);
+                return randomIdiom;
            }else{
                 //输出语句"成语表中没有成语了,游戏结束"
-                System.out.println("成语都被你接完了,你是开挂了吗?");
+                //System.out.println("成语都被你接完了,你是开挂了吗?");
                 return null;
            }
         }
+
     }
+    @Override
     public double getCurrentScore() {
         //系统的主要方法之一,通过已经使用的成语的可接龙数量计算当前分数,
         float score = 0;
@@ -73,14 +87,49 @@ public class RefereeSystem extends GameFlow{
         score += Math.pow(1.5, usedIdioms.size()+1) + 1000*killNum;//再加上接龙长度得分和击杀得分
         return score;//分数越高,2的幂次方越大,且分数的增加速度越快
     }
+    @Override 
+    public Idiom getHint(String computerIdiom){//调用这个方法,一定要保证调用的成语是存在的.
+        if(previousHintIdiom != null ){
+            //如果存在上一次提示的成语,将其加到已经使用的成语列表中,保证不重复提示
+            usedIdioms.add(previousHintIdiom);
+        }
+        if (availableHintCount <= 0){
+            //如果可用提示次数为0,返回一个404成语
+            Idiom errorIdiom = new Idiom(404);
+            return errorIdiom;
+        }
+        //系统的主要方法之一,根据用户输入的成语,返回一个提示成语
+        //从成语表中找到该字符对应的成语
+        Idiom helpIdiom = wordIdiomMap.get(computerIdiom);
+        //从成语对象中得到该成语的最后一个字
+        ChineseCharacter cword = helpIdiom.getCharacterList().get(helpIdiom.getCharacterList().size()-1);
+        //从成语表中找到可接龙的成语
+        Idiom hintIdiom = findValidIdiom(cword);
+        availableHintCount--;//可用提示次数减一
+        hintIdiom.setState(availableHintCount);//设置提示成语的状态,向系统传递提示次数
+        previousHintIdiom = hintIdiom;//将提示成语设置为上一次提示的成语
+        return hintIdiom;
+    }
+    
     public boolean isValidIdiom(final String idiom) {
-        //系统的主要方法之一,判断用户输入的成语是否合法.(是否在成语表中,是否已经使用过)
+        //系统的主要方法之一,判断用户输入的成语是否合法.(是否在成语表中)
         if (idiom == null || idiom.isEmpty()) {
             return false;
         }
         //判断
         Idiom candidate = wordIdiomMap.get(idiom);
-        if (usedIdioms.contains(candidate) || candidate == null) {
+        if (candidate == null) {
+            return false;
+        }
+        return true;
+    }
+    public boolean idiomNotUsed(final String idiom){
+        //系统的主要方法之一,判断用户输入的成语是否已经使用过.不在成语表中的成语也算使用过,返回false,是包括了isValidIdiom的.
+        if(!isValidIdiom(idiom)){
+            return false;
+        }
+        Idiom candidate = wordIdiomMap.get(idiom);
+        if(usedIdioms.contains(candidate)){
             return false;
         }
         return true;

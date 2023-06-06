@@ -18,7 +18,7 @@ import com.nucleon.entity.Idiom;
 import com.nucleon.util.DataUtil;
 import com.nucleon.util.PinyinHelper;
 
-public class GameFlow {
+public class GameFlow implements GamingLogic{
     protected Scanner sc = new Scanner(System.in);
     GameFlow gameFlow;
 
@@ -39,6 +39,7 @@ public class GameFlow {
     protected static Set<Idiom> usedIdioms = new HashSet<>();
 
     public GameFlow() {
+        this.gameFlow = this; 
     }
 
     public GameFlow(int type) {
@@ -51,7 +52,7 @@ public class GameFlow {
 
     public void startGame() {
         // 读取数据文件
-        loadData();
+        loadGame();
         // 选择游戏，如果gameFlow不为null则跳过选择
         if (gameFlow == null) {
             selectGame();//根据用户输入选择游戏类型决定实例化哪个子类
@@ -60,8 +61,8 @@ public class GameFlow {
         mainFlow();//这里的mainFlow()是抽象方法,调用的是子类,由子类实现
     }
 
-
-    public void loadData() {
+    @Override
+    public void loadGame() {
         String data = DataUtil.readData("/idiom.json");
         String commonData = DataUtil.readData("/common_idiom.json");
         if (data == null || commonData == null) {
@@ -96,19 +97,30 @@ public class GameFlow {
         DataUtil.writePinyinZiListMapToFile(pinyinZiListMap, "pinyin_zi_list_map.txt");
         DataUtil.writeInitialWordListMapToFile(initialWordListMap, "initial_word_list_map.txt");
         DataUtil.writeWordIdiomMapToFile(wordIdiomMap, "word_idiom_map.txt");
-
     }
-/* 
-    private List<Idiom> parseIdioms(String data) {
 
-        try {
-            return JSON.parseArray(data, Idiom.class);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+    @Override
+    public void gameSetting(int gameType,Boolean challengeMode,Boolean allowFurtherSearch) {
+        if (gameType == 1) {
+            gameFlow = new Dict();
+        } else {
+            gameFlow = new SolitaireGame(challengeMode,allowFurtherSearch);
         }
+
     }
-*/
+    @Override
+    public Idiom doOneRound(String userIdiom){
+        return gameFlow.doOneRound(userIdiom);
+    }
+    @Override
+    public double getCurrentScore(){
+        return gameFlow.getCurrentScore();
+    }
+    @Override
+    public Idiom getHint(String computerIdiom){
+        return gameFlow.getHint(computerIdiom);
+    }
+
     private void processIdiom(Idiom idiom, List<Idiom> commonIdioms) {
         /*
          * 处理每个成语对象,将其常用性设置为true或false
