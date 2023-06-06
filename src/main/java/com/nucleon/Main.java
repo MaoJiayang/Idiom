@@ -26,7 +26,7 @@ public class Main
         //提示用户选择游戏模式
         game.gameSetting(gameType,challengeMode,allowFurtherSearch);
         //提示用户从键盘输入成语
-        System.out.print("exit退出,skip跳过本轮\n输入龙头>>>");
+        System.out.print("exit退出\n输入龙头>>>");
         String userIdiom = sc.nextLine();
             if ("exit".equals(userIdiom)) {
                 System.out.println("游戏结束");
@@ -43,7 +43,7 @@ public class Main
         }
         while (true) {
             //提示用户从键盘输入成语
-            System.out.print("输入接龙成语>>>");
+            System.out.print("exit退出,skip跳过本轮\n输入接龙成语>>>");
             userIdiom = sc.nextLine();
             if ("exit".equals(userIdiom)) {
                 System.out.println("游戏结束");
@@ -52,16 +52,16 @@ public class Main
             if("skip".equals(userIdiom)) {
                 System.out.println("跳过本轮.");
                 Idiom hintIdiom = game.getHint(computerIdiom.getWord());
-                System.out.println("电脑帮助成语："+hintIdiom.getWord());
                 if(hintIdiom.getState() == 404) {
                     System.out.println("提示次数已经用完了！");
                     continue;
                 }
+                System.out.println("电脑帮助成语："+hintIdiom.getWord());
                 continue;
             }
             computerIdiom = game.doOneRound(userIdiom);
             if(computerIdiom.getState() == 404) {
-                System.out.println("该成语不存在，请重新输入！");
+                System.out.println("该成语使用过或不存在，请重新输入！");
                 continue;
             }
             if (computerIdiom.getState() == 1) {
