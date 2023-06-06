@@ -48,11 +48,17 @@ public class IdiomGame extends JFrame implements GamingLogic {
                 String input = inputField.getText().trim();
                 if (!input.isEmpty()) {
                     Idiom result = doOneRound(input);
-                    outputArea.append(result.getWord() + "\n");
-                    currentIdiom = result;
-                    inputField.setText("");
-                    score = (int) getCurrentScore();
-                    scoreLabel.setText("分数: " + score);
+                    if (result.getState() == 404) {
+                        JOptionPane.showMessageDialog(IdiomGame.this, "成语不存在");
+                    } else if (result.getState() == 1) {
+                        JOptionPane.showMessageDialog(IdiomGame.this, "杀龙！");
+                    } else {
+                        currentIdiom = result;
+                        outputArea.append(result.getWord() + "\n");
+                        inputField.setText("");
+                        score = (int) getCurrentScore();
+                        scoreLabel.setText("分数: " + score);
+                    }
                 }
             }
         });
@@ -60,7 +66,7 @@ public class IdiomGame extends JFrame implements GamingLogic {
         hintButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (currentIdiom != null && currentIdiom.getState() == 1) {
+                if (currentIdiom != null) {
                     Idiom hint = getHint(currentIdiom.getWord());
                     if (hint.getState() == 404) {
                         JOptionPane.showMessageDialog(IdiomGame.this, "提示次数已用完");
