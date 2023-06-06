@@ -26,7 +26,7 @@ public class Dict extends GameFlow{
         }
     }
     @Override
-    public Idiom doOneRound(String userIdiom) {
+    public Idiom doOneRound(String userIdiom) {//该方法只返回一个成语.如果要解析其中的信息,可以自行编写方法,或者调用静态的parseIdiomToString方法
             Idiom idiom = wordIdiomMap.get(userIdiom);
             if (idiom == null) {
                 return null;
