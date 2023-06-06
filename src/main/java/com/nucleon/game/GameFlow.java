@@ -1,8 +1,5 @@
 package com.nucleon.game;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -48,17 +45,6 @@ public class GameFlow implements GamingLogic{
         } else {
             gameFlow = new SolitaireGame();
         }
-    }
-
-    public void startGame() {
-        // 读取数据文件
-        loadGame();
-        // 选择游戏，如果gameFlow不为null则跳过选择
-        if (gameFlow == null) {
-            selectGame();//根据用户输入选择游戏类型决定实例化哪个子类
-        }
-        // 进入游戏主要流程(包括游戏前的准备和游戏过程)
-        mainFlow();//这里的mainFlow()是抽象方法,调用的是子类,由子类实现
     }
 
     @Override
@@ -120,6 +106,8 @@ public class GameFlow implements GamingLogic{
     public Idiom getHint(String computerIdiom){
         return gameFlow.getHint(computerIdiom);
     }
+
+
 
     private void processIdiom(Idiom idiom, List<Idiom> commonIdioms) {
         /*
@@ -239,17 +227,6 @@ public class GameFlow implements GamingLogic{
         int allowHomophoneNum = pinyinZiListMap.get(pinyinWithoutTone).size() - 1;
         idiom.setAllowHomophoneNum(allowHomophoneNum + idiom.getNotAllowHomophoneNum());
         //System.out.println(idiom.getWord()+"可同音个数处理完毕!"+idiom.getAllowHomophoneNum());
-    }
-
-    private void selectGame() {//选择游戏
-        System.out.println("请选择游戏: 1-成语词典 2-成语接龙");
-        System.out.print(">>>");
-        String mode = sc.nextLine();
-        if ("1".equals(mode)) {
-            gameFlow = new Dict();
-        } else {
-            gameFlow = new SolitaireGame();
-        }
     }
 
     protected void exit() {//退出游戏
