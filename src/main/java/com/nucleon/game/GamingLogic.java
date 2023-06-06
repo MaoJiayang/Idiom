@@ -6,7 +6,7 @@ public interface GamingLogic {
     void loadGame();//加载游戏数据
     void gameSetting(int gameType,Boolean challengeMode,Boolean allowFurtherSearch);//游戏设置,主要是初始化裁判系统
     /*
-     * 说明:游戏初始难度根据不同模式写在裁判系统里了
+     * 说明:游戏初始难度根据不同模式写在裁判系统里了.裁判系统具体有什么功能,可以看裁判系统的定义
      */
     Idiom doOneRound(String userIdiom);//每一轮游戏的逻辑,用户输入一个成语,返回一个合理的成语.
     /*

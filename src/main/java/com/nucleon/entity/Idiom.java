@@ -24,7 +24,10 @@ public class Idiom {
     private int state = 0;//正常状态为0,生成随机龙头时为1
 
     public Idiom(int state) {
-        this.state = state;//一般情况无需调用这个构造函数.只有在返回异常成语时才需要调用
+        this.state = state;//一般情况无需调用这个构造函数.只有在需要返回状态(成语提示,错误信息)成语时才需要调用
+        if (state == 404) {
+            this.word = "404 not found.\n如果看到这条消息,可能是游戏流程中没有判断接口返回的成语是否存在.";
+        }
     }
     public Idiom() {
     }
