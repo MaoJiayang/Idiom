@@ -91,7 +91,7 @@
             <configuration>
                 <archive>
                     <manifest>
-                        <mainClass>com.nucleon.view.IdiomGame</mainClass>
+                        <mainClass>com.nucleon.Main</mainClass>
                     </manifest>
                 </archive>
                 <descriptorRefs>
