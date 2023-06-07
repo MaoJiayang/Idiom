@@ -98,8 +98,8 @@ public class IdiomGame extends JFrame implements GamingLogic {
                     }else if(hint.getState() == 403){
                         JOptionPane.showMessageDialog(IdiomGame.this, "提示这个成语会让我自杀,我才不给你:)");
                     }else {
-                        JOptionPane.showMessageDialog(IdiomGame.this, "提示: " + hint.getWord());
-                        currentIdiom = hint;
+                        JOptionPane.showMessageDialog(IdiomGame.this, "提示: " + hint.getWord() + "\n剩余提示次数:" + hint.getState());
+                        //currentIdiom = hint;
                     }
                 }
             }
