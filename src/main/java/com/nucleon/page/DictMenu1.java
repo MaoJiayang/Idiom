@@ -24,7 +24,6 @@ public class DictMenu1 extends JFrame{
 	        setTitle("成语词典");
 	        setVisible(true);
 	        setDefaultCloseOperation(JFrame. DISPOSE_ON_CLOSE);
-	        //JLabel label = (JLabel) getLayeredPane().getComponentsInLayer(Integer.MIN_VALUE)[0];
 
 	    }
 
@@ -38,7 +37,7 @@ public class DictMenu1 extends JFrame{
 	        //设置图片的大小
 	        label.setSize(700,500);
 	        //把背景图片添加到最底层
-	        getLayeredPane().add(label,Integer.MIN_VALUE);
+	        getLayeredPane().add(label,new Integer(Integer.MIN_VALUE));//?为什么这个waring修掉窗口就会异常
 	        //panel =  (JPanel)getContentPane();
 	        //将内容窗口设为透明
 	        panel.setOpaque(false);

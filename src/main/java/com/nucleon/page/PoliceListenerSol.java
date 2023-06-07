@@ -20,8 +20,8 @@ public class PoliceListenerSol implements ActionListener{
         if (!input.isEmpty()) {
             Idiom result = GameChoiceMenu1.game.doOneRound(input);
             if(result.getState()==1) {
-            	JOptionPane.showMessageDialog(viewS,"你击杀了这条龙！奖励1000分.下面的成语是新的龙头:"+ "\n"+result.getWord() );
-                viewS.textShow.setText(result.getWord());
+            	JOptionPane.showMessageDialog(viewS,"你击杀了这条龙！奖励1000分.下面的成语是新的龙头."+ "\n"+result.getWord());
+                viewS.textShow.setText(result.getWord() + "\n");
             	}
             else if (result.getState()==404) {
             	JOptionPane.showMessageDialog(viewS,"该成语不存在,不符合接龙规则或已被使用\n\t请重新输入！");

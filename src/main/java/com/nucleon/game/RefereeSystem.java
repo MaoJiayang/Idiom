@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.lang.Math;
 
 import com.nucleon.entity.ChineseCharacter;
@@ -25,7 +26,7 @@ public class RefereeSystem extends GameFlow{
         private Idiom previousHintIdiom = null;//上一次提示的成语
         //存储游戏中已经使用过的成语
         //如{"我行我素","我见犹怜",...}
-        private static List<Idiom> usedIdioms = new ArrayList<>();
+        private static LinkedHashSet<Idiom> usedIdioms = new LinkedHashSet<>();
 
     RefereeSystem(boolean allowFurtherSearch, boolean challengeMode) {//构造函数
         this.allowFurtherSearch = allowFurtherSearch;
@@ -60,7 +61,7 @@ public class RefereeSystem extends GameFlow{
         Idiom candidate = wordIdiomMap.get(idiomString);
         //下面是判断在不允许同音的情况下,用户是否接上了龙
         if(!allowFurtherSearch && usedIdioms != null && usedIdioms.size() > 0){//取出用过的成语的最后一个的最后字.如果和这个成语的第一个字不相同,返回错误成语
-            Idiom lastIdiom = usedIdioms.get(usedIdioms.size()-1);
+            Idiom lastIdiom = getLastUsedIdiom();
             char previousLastChar = lastIdiom.getCharacterList().get(lastIdiom.getCharacterList().size()-1).getZi();
             char thisFirstChar = idiomString.charAt(0);
             if(previousLastChar != thisFirstChar){
@@ -70,10 +71,10 @@ public class RefereeSystem extends GameFlow{
         }
         //下面是判断在允许同音的情况下,用户是否接上了龙
         if (allowFurtherSearch && usedIdioms != null && usedIdioms.size() > 0){
-            Idiom lastIdiom = usedIdioms.get(usedIdioms.size()-1);
+            Idiom lastIdiom = getLastUsedIdiom();
             String previousLastPinyin = lastIdiom.getCharacterList().get(lastIdiom.getCharacterList().size()-1).getPinyin();
             String thisFirstPinyin = candidate.getCharacterList().get(0).getPinyin();
-            if(previousLastPinyin != thisFirstPinyin){
+            if(!previousLastPinyin.equals(thisFirstPinyin)){
                 Idiom errorIdiom = new Idiom(404);//用户成语没接上龙头,返回404
                 return errorIdiom;
             }
@@ -305,5 +306,17 @@ public class RefereeSystem extends GameFlow{
         }
         int idx = (int) (idioms.size() * Math.random());
         return idioms.get(idx);
+    }
+
+    private Idiom getLastUsedIdiom() {//返回上一次使用的成语
+        if (usedIdioms.isEmpty()) {
+            return null;
+        }
+        Idiom lastElement = null;
+        Iterator<Idiom> iterator = usedIdioms.iterator();
+        while (iterator.hasNext()) {
+            lastElement = iterator.next();
+        }
+        return lastElement;
     }
 }
