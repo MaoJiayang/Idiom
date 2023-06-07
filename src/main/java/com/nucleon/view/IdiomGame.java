@@ -28,7 +28,7 @@ public class IdiomGame extends JFrame implements GamingLogic {
         super("成语接龙");
         game = new GameFlow();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(400, 400);
+        setSize(800, 400);
         setLayout(new BorderLayout());
 
         inputField = new JTextField();
@@ -68,7 +68,7 @@ public class IdiomGame extends JFrame implements GamingLogic {
                 if (!input.isEmpty()) {
                     Idiom result = doOneRound(input);
                     if (result.getState() == 404) {
-                        JOptionPane.showMessageDialog(IdiomGame.this, "成语被使用过或不存在");
+                        JOptionPane.showMessageDialog(IdiomGame.this, "成语被使用过,不符合接龙规则或不存在");
                     } else if (result.getState() == 1) {
                         JOptionPane.showMessageDialog(IdiomGame.this, "成功击杀一条龙,奖励一千分！\n接下来将会给出一个随机成语作为新龙头");
                         currentIdiom = result;

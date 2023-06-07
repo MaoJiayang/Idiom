@@ -2,6 +2,7 @@ package com.nucleon.game;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.Iterator;
@@ -19,13 +20,13 @@ public class RefereeSystem extends GameFlow{
         
         private boolean challengeMode;//游戏模式
         private boolean allowFurtherSearch;//是否允许同音不同调
-        private int currentDifficulty = 0;//当前难度,代表的是最大可接龙数
+        private int currentDifficulty = Integer.MAX_VALUE;//当前难度,代表的是最大可接龙数
         private int availableHintCount = 3;//可用提示次数
         private int killNum = 0;//当前杀龙数
         private Idiom previousHintIdiom = null;//上一次提示的成语
         //存储游戏中已经使用过的成语
         //如{"我行我素","我见犹怜",...}
-        private static Set<Idiom> usedIdioms = new HashSet<>();
+        private static List<Idiom> usedIdioms = new ArrayList<>();
 
     RefereeSystem(boolean allowFurtherSearch, boolean challengeMode) {//构造函数
         this.allowFurtherSearch = allowFurtherSearch;
@@ -147,6 +148,15 @@ public class RefereeSystem extends GameFlow{
         if(usedIdioms.contains(candidate)){
             return false;
         }
+        if(!allowFurtherSearch && usedIdioms != null &&usedIdioms.size() > 0){
+            //取出用过的成语的最后一个的最后字.如果和这个成语的第一个字不相同,返回false
+            Idiom lastIdiom = usedIdioms.get(usedIdioms.size()-1);
+            char lastChar = lastIdiom.getCharacterList().get(lastIdiom.getCharacterList().size()-1).getZi();
+            char firstChar = idiom.charAt(0);
+            if(lastChar != firstChar){
+                return false;
+            }
+        }    
         return true;
     }
     public void updateUsedIdioms(final Idiom idiom) {
