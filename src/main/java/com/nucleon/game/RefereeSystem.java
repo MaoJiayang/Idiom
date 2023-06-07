@@ -52,16 +52,37 @@ public class RefereeSystem extends GameFlow{
     * 1.根据用户输入成语的最后一个字,在成语表中查找所有可接龙的成语
     * 2.从中找出符合当前难度要求(是否允许同音,当前难度数是多少)的接龙成语,并返回
     */  
-    System.out.println("裁判系统中被调用");
+    System.out.println("裁判系统被调用");
         if (!idiomNotUsed(idiomString)){//如果成语不合法或已经被使用过
             Idiom errorIdiom = new Idiom(404);
             return errorIdiom;
         }
+        Idiom candidate = wordIdiomMap.get(idiomString);
+        //下面是判断在不允许同音的情况下,用户是否接上了龙
+        if(!allowFurtherSearch && usedIdioms != null && usedIdioms.size() > 0){//取出用过的成语的最后一个的最后字.如果和这个成语的第一个字不相同,返回错误成语
+            Idiom lastIdiom = usedIdioms.get(usedIdioms.size()-1);
+            char previousLastChar = lastIdiom.getCharacterList().get(lastIdiom.getCharacterList().size()-1).getZi();
+            char thisFirstChar = idiomString.charAt(0);
+            if(previousLastChar != thisFirstChar){
+                Idiom errorIdiom = new Idiom(404);//用户成语没接上龙头,返回404
+                return errorIdiom;
+            }
+        }
+        //下面是判断在允许同音的情况下,用户是否接上了龙
+        if (allowFurtherSearch && usedIdioms != null && usedIdioms.size() > 0){
+            Idiom lastIdiom = usedIdioms.get(usedIdioms.size()-1);
+            String previousLastPinyin = lastIdiom.getCharacterList().get(lastIdiom.getCharacterList().size()-1).getPinyin();
+            String thisFirstPinyin = candidate.getCharacterList().get(0).getPinyin();
+            if(previousLastPinyin != thisFirstPinyin){
+                Idiom errorIdiom = new Idiom(404);//用户成语没接上龙头,返回404
+                return errorIdiom;
+            }
+        }
+        //到这里说明用户接上了龙,下面为用户的接龙提供接龙成语
         if (currentDifficulty < 0){//每轮难度递减100,如果难度小于0,设为0
             currentDifficulty = 0;
         }
         else currentDifficulty -= 100;
-        Idiom candidate = wordIdiomMap.get(idiomString);
         usedIdioms.add(candidate);
         ChineseCharacter cword = candidate.getCharacterList().get(candidate.getCharacterList().size()-1);//获取成语的最后一个字
         Idiom validIdiom = (findValidIdiom(cword));
@@ -146,15 +167,6 @@ public class RefereeSystem extends GameFlow{
         Idiom candidate = wordIdiomMap.get(idiom);
         if(usedIdioms.contains(candidate)){
             return false;
-        }
-        if(!allowFurtherSearch && usedIdioms != null &&usedIdioms.size() > 0){
-            //取出用过的成语的最后一个的最后字.如果和这个成语的第一个字不相同,返回false
-            Idiom lastIdiom = usedIdioms.get(usedIdioms.size()-1);
-            char lastChar = lastIdiom.getCharacterList().get(lastIdiom.getCharacterList().size()-1).getZi();
-            char firstChar = idiom.charAt(0);
-            if(lastChar != firstChar){
-                return false;
-            }
         }    
         return true;
     }
