@@ -79,10 +79,10 @@ public class GameFlow implements GamingLogic{
         calculateHomophoneNum(idioms);//计算每个成语的可接龙数,分为普通接龙数和同音接龙数.该函数中调用了两个私有方法
         System.out.println("可接龙数计算成功!");
         //提取idioms中的成语,将其word,notAllowHomophoneNum,allowHomophoneNum用逗号分割打印为txt文件
-        DataUtil.writeIdiomsToFile(idioms, "idioms.txt");
-        DataUtil.writePinyinZiListMapToFile(pinyinZiListMap, "pinyin_zi_list_map.txt");
-        DataUtil.writeInitialWordListMapToFile(initialWordListMap, "initial_word_list_map.txt");
-        DataUtil.writeWordIdiomMapToFile(wordIdiomMap, "word_idiom_map.txt");
+        //DataUtil.writeIdiomsToFile(idioms, "idioms.txt");
+        //DataUtil.writePinyinZiListMapToFile(pinyinZiListMap, "pinyin_zi_list_map.txt");
+        //DataUtil.writeInitialWordListMapToFile(initialWordListMap, "initial_word_list_map.txt");
+        //DataUtil.writeWordIdiomMapToFile(wordIdiomMap, "word_idiom_map.txt");
     }
 
     @Override
