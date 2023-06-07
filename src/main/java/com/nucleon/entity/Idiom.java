@@ -28,6 +28,9 @@ public class Idiom {
         if (state == 404) {
             this.word = "404 not found.\n如果看到这条消息,可能是游戏流程中没有判断接口返回的成语是否存在.";
         }
+        if (state == 403){
+            this.word = "403 forbidden.\n如果看到这条消息,意味着该提示词语会导致电脑接不了龙.这种情况下,在游戏流程里不提供这个提示成语最好";
+        }
     }
     public Idiom() {
     }
