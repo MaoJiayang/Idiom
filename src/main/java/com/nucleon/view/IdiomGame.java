@@ -21,6 +21,8 @@ public class IdiomGame extends JFrame implements GamingLogic {
     private JCheckBox challengeModeCheckBox;
     private JCheckBox allowFurtherSearchCheckBox;
     private JComboBox<String> gameTypeComboBox;
+    private int previousPullChoice = 1;
+    private int gameStarted = 0;
 
     public IdiomGame() {
         super("成语接龙");
@@ -61,6 +63,7 @@ public class IdiomGame extends JFrame implements GamingLogic {
         submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                gameStarted++;
                 String input = inputField.getText().trim();
                 if (!input.isEmpty()) {
                     Idiom result = doOneRound(input);
@@ -87,6 +90,7 @@ public class IdiomGame extends JFrame implements GamingLogic {
         hintButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                gameStarted++;
                 if (currentIdiom != null) {
                     Idiom hint = getHint(currentIdiom.getWord());
                     if (hint.getState() == 404) {
@@ -105,28 +109,47 @@ public class IdiomGame extends JFrame implements GamingLogic {
         challengeModeCheckBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                gameStarted++;
                 boolean challengeMode = challengeModeCheckBox.isSelected();
                 boolean allowFurtherSearch = allowFurtherSearchCheckBox.isSelected();
-                gameSetting(gameTypeComboBox.getSelectedIndex() + 1, challengeMode, allowFurtherSearch);
+                int gameType = gameTypeComboBox.getSelectedIndex() + 1;
+                if (confirmReset()) {
+                    game.gameSetting(gameType, challengeMode, allowFurtherSearch);
+                } else {
+                    challengeModeCheckBox.setSelected(!challengeMode);
+                }
             }
         });
 
         allowFurtherSearchCheckBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                gameStarted++;
                 boolean challengeMode = challengeModeCheckBox.isSelected();
                 boolean allowFurtherSearch = allowFurtherSearchCheckBox.isSelected();
-                gameSetting(gameTypeComboBox.getSelectedIndex() + 1, challengeMode, allowFurtherSearch);
+                int gameType = gameTypeComboBox.getSelectedIndex() + 1;
+                if (confirmReset()) {
+                    game.gameSetting(gameType, challengeMode, allowFurtherSearch);
+                } else {
+                    allowFurtherSearchCheckBox.setSelected(!allowFurtherSearch);
+                }
             }
         });
 
         gameTypeComboBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                gameStarted++;
                 boolean challengeMode = challengeModeCheckBox.isSelected();
                 boolean allowFurtherSearch = allowFurtherSearchCheckBox.isSelected();
                 int gameType = gameTypeComboBox.getSelectedIndex() + 1;
-                game.gameSetting(gameType, challengeMode, allowFurtherSearch);
+                if (confirmReset()) {
+                    game.gameSetting(gameType, challengeMode, allowFurtherSearch);
+                    previousPullChoice = gameTypeComboBox.getSelectedIndex();
+                } else {
+                    gameTypeComboBox.setSelectedIndex(previousPullChoice);
+                }
+                
             }
         });
     }
@@ -138,7 +161,6 @@ public class IdiomGame extends JFrame implements GamingLogic {
 
     @Override
     public void gameSetting(int gameType, Boolean challengeMode, Boolean allowFurtherSearch) {
-        // TODO: 实现游戏设置的逻辑
         gameTypeComboBox.setSelectedIndex(gameType - 1);
         challengeModeCheckBox.setSelected(challengeMode);
         allowFurtherSearchCheckBox.setSelected(allowFurtherSearch);
@@ -158,6 +180,14 @@ public class IdiomGame extends JFrame implements GamingLogic {
     @Override
     public double getCurrentScore() {
         return game.getCurrentScore();
+    }
+
+    private boolean confirmReset() {
+        if (gameStarted<2) {
+            return true;
+        }
+        int result = JOptionPane.showConfirmDialog(IdiomGame.this, "改变设置会重置游戏.确定?", "提示", JOptionPane.YES_NO_OPTION);
+        return result == JOptionPane.YES_OPTION;
     }
 
     public static void main(String[] args) {

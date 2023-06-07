@@ -23,14 +23,23 @@ public class RefereeSystem extends GameFlow{
         private int availableHintCount = 3;//可用提示次数
         private int killNum = 0;//当前杀龙数
         private Idiom previousHintIdiom = null;//上一次提示的成语
+        //存储游戏中已经使用过的成语
+        //如{"我行我素","我见犹怜",...}
+        private static Set<Idiom> usedIdioms = new HashSet<>();
 
-    RefereeSystem(boolean allowFurtherSearch, boolean challengeMode) {
+    RefereeSystem(boolean allowFurtherSearch, boolean challengeMode) {//构造函数
         this.allowFurtherSearch = allowFurtherSearch;
         this.challengeMode = challengeMode;
+        this.availableHintCount = 3;
+        this.killNum = 0;
+        this.previousHintIdiom = null;
         if (challengeMode) {
             currentDifficulty = 700;//挑战模式下,难度为700,即初始最大可接龙数为700
         }else {
             currentDifficulty = Integer.MAX_VALUE;//最大值,不限制
+        }
+        if(usedIdioms != null) {
+            usedIdioms.clear();
         }
     }
     @Override

@@ -33,7 +33,7 @@ public class GameFlow implements GamingLogic{
 
     //存储游戏中已经使用过的成语
     //如{"我行我素","我见犹怜",...}
-    protected static Set<Idiom> usedIdioms = new HashSet<>();
+    //protected static Set<Idiom> usedIdioms = new HashSet<>();
 
     public GameFlow() {
         this.gameFlow = this; 
@@ -108,8 +108,7 @@ public class GameFlow implements GamingLogic{
         return gameFlow.getHint(computerIdiom);
     }
 
-
-
+    
     private void processIdiom(Idiom idiom, List<Idiom> commonIdioms) {
         /*
          * 处理每个成语对象,将其常用性设置为true或false
