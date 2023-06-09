@@ -176,7 +176,10 @@ public class GameFlow implements GamingLogic{
         }
         
     }
-
+    /*
+     * @author:MaoJiayang;XiaTiantian;ZhangXue'ru;XieQianqian
+     * @date:2023/06/07
+     */
     private void processInitialWordListMap(Idiom idiom) {
         /*
          * 将每个成语对象的首字(字符)和成语(字符)存入initialWordListMap

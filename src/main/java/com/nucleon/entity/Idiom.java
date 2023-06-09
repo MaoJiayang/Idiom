@@ -21,7 +21,7 @@ public class Idiom {
     //允许同音的可接龙成语个数,用于计算分数
     private int allowHomophoneNum;
     private boolean isCommonlyUsed;
-    private int state = 0;//正常状态为0,生成随机龙头时为1
+    private int state = 17;//正常状态为17,生成随机龙头时为1
 
     public Idiom(int state) {
         this.state = state;//一般情况无需调用这个构造函数.只有在需要返回状态(成语提示,错误信息)成语时才需要调用

@@ -22,7 +22,7 @@ public class GameChoiceMenu1 extends JFrame {
 
         // 创建面板和其上的控件
         JPanel panel = new JPanel(new BorderLayout());
-        final ImageIcon icon = new ImageIcon("image/backGround3.jpg");
+        final ImageIcon icon = new ImageIcon(getClass().getResource("/image/backGround3.jpg"));
         JLabel background = new JLabel(icon) {
             @Override
             public void paintComponent(Graphics g) {
@@ -35,10 +35,13 @@ public class GameChoiceMenu1 extends JFrame {
                 g2d.drawImage(icon.getImage(), transform, this);
             }
         };
-        JButton DictionaryButton = new JButton("成语词典");
-        JButton SolitaireButton = new JButton("成语接龙");
-        JButton ReturnButton = new JButton("返回首页");
-
+        JButton DictionaryButton = new RoundedButton("成语词典");
+        JButton SolitaireButton = new RoundedButton("成语接龙");
+        JButton ReturnButton = new RoundedButton("返回首页");
+    /*
+     * @author:MaoJiayang;XiaTiantian;ZhangXue'ru;XieQianqian
+     * @date:2023/06/07
+     */
         // 设置控件的样式
         background.setHorizontalAlignment(JLabel.CENTER);
         background.setVerticalAlignment(JLabel.CENTER);

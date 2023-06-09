@@ -32,10 +32,10 @@ public class SolMenu extends JFrame{
     }
 
     void init(){
-    	panel = new BackgroundPanel(new ImageIcon("image/backGround1.jpg"));
-    	panel.setBgImage(new ImageIcon("image/backGround1.jpg"));
+    	panel = new BackgroundPanel(new ImageIcon(getClass().getResource("/image/backGround1.jpg")));
+    	panel.setBgImage(new ImageIcon(getClass().getResource("/image/backGround1.jpg")));
         //获取背景图片路径
-        ImageIcon  bg = new ImageIcon("image/backGround1.jpg");
+        ImageIcon  bg = new ImageIcon(getClass().getResource("/image/backGround1.jpg"));
         //建立图像文本
         JLabel  label  =  new JLabel(bg);
         //设置图片的大小
@@ -54,30 +54,32 @@ public class SolMenu extends JFrame{
         wanjiashuru.setFont(font);
         wanjiashuru.setPreferredSize(new Dimension(100,35));//设置文本框大小
         //创建按钮
-        queding = new JButton("确定");
+        queding = new RoundedButton("确定");
         queding.setFont(font);
-        tishi = new JButton("提示");
+        tishi = new RoundedButton("提示");
         tishi.setFont(font);
         textShow = new JTextArea(4,30);
         textShow.setEditable(false);
         textShow.setFont(font);
         textShow.setAlignmentX(JTextArea.CENTER_ALIGNMENT);
         textShow.setAlignmentY(JTextArea.CENTER_ALIGNMENT);
+        textShow.setBorder(BorderFactory.createLineBorder(Color.GRAY));//设置边框
         textShow.setLineWrap(true);//文字比控件的宽度还长时会自动换行
         textShow.setWrapStyleWord(true);//在单词边界换行
-        textlabel1= new JLabel("电脑输出：");
+        textlabel1= new JLabel("电脑接龙：");
         textlabel1.setFont(font);
         textlabel2=new JLabel("当前积分：");
         textlabel2.setFont(font);
         gradeShow = new JTextArea(4,30);
         gradeShow.setEditable(false);
+        gradeShow.setBorder(BorderFactory.createLineBorder(Color.GRAY));//设置边框
         listenerqd = new PoliceListenerSol();
         listenerqd.setViewSolMenu(this);
         queding.addActionListener(listenerqd);
         listenerts = new PoliceListenerHint();
         listenerts.setViewSolMenu(this);
         tishi.addActionListener(listenerts);
-        tuichu= new JButton("退出本局");
+        tuichu= new RoundedButton("退出本局");
         tuichu.setFont(font);
         tuichu.addActionListener(new ActionListener() {
             @Override
@@ -113,3 +115,7 @@ public class SolMenu extends JFrame{
 
     }
 }
+    /*
+     * @author:MaoJiayang;XiaTiantian;ZhangXue'ru
+     * @date:2023/06/07
+     */

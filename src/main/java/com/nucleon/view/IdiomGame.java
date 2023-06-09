@@ -8,7 +8,9 @@ import com.nucleon.entity.Idiom;
 import com.nucleon.game.GameFlow;
 import com.nucleon.game.GamingLogic;
 import com.nucleon.game.Dict;
-
+/*
+ * 内部测试用简单界面
+ */
 public class IdiomGame extends JFrame implements GamingLogic {
     private JTextField inputField;
     private JTextArea outputArea;
@@ -135,7 +137,9 @@ public class IdiomGame extends JFrame implements GamingLogic {
                 }
             }
         });
-
+/*
+ * @Author:MaoJiayang
+ */
         gameTypeComboBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

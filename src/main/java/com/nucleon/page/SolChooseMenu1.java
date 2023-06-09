@@ -18,7 +18,7 @@ public class SolChooseMenu1 extends JFrame{
 
         // 创建面板和其上的控件
         JPanel panel = new JPanel(new BorderLayout());
-        final ImageIcon icon = new ImageIcon("image/backGround3.jpg");
+        final ImageIcon icon = new ImageIcon(getClass().getResource("/image/backGround3.jpg"));
         JLabel background = new JLabel(icon) {
             @Override
             public void paintComponent(Graphics g) {
@@ -35,7 +35,7 @@ public class SolChooseMenu1 extends JFrame{
         panel.add(background, BorderLayout.CENTER);
         final JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
         buttonPanel.setOpaque(false);
-        JButton ylButton = new JButton("娱乐模式");
+        JButton ylButton = new RoundedButton("娱乐模式");
         ylButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -74,7 +74,7 @@ public class SolChooseMenu1 extends JFrame{
                 buttonPanel.repaint();
             }
         });
-        JButton tzButton = new JButton("挑战模式");
+        JButton tzButton = new RoundedButton("挑战模式");
         tzButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -115,7 +115,7 @@ public class SolChooseMenu1 extends JFrame{
             }
         });
         
-        JButton ReturnButton = new JButton("返回上级");
+        JButton ReturnButton = new RoundedButton("返回上级");
         buttonPanel.add(ylButton);
         buttonPanel.add(tzButton);
         buttonPanel.add(ReturnButton);

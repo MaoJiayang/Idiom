@@ -13,7 +13,7 @@ public class Menu1 extends JFrame {
 
         // 创建面板和其上的控件
         JPanel panel = new JPanel(new BorderLayout());
-        final ImageIcon icon = new ImageIcon("image/backGroundMenu.jpg");
+        final ImageIcon icon = new ImageIcon(getClass().getResource("/image/backGroundMenu.jpg"));
         JLabel background = new JLabel(icon) {
             @Override
             public void paintComponent(Graphics g) {
@@ -26,7 +26,11 @@ public class Menu1 extends JFrame {
                 g2d.drawImage(icon.getImage(), transform, this);
             }
         };
-        JButton gameChoiceButton = new JButton("游戏模式");
+    /*
+     * @author:MaoJiayang;XiaTiantian;ZhangXue'ru;XieQianqian
+     * @date:2023/06/07
+     */
+        JButton gameChoiceButton = new RoundedButton("开始游戏");
 
         // 设置控件的样式
         background.setHorizontalAlignment(JLabel.CENTER);

@@ -7,7 +7,10 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
 import javax.swing.*;
-
+    /*
+     * @author:MaoJiayang;XiaTiantian;ZhangXue'ru;XieQianqian
+     * @date:2023/06/07
+     */
 public class DictMenu1 extends JFrame{
 	 public JTextField wanjiashuru;
 	    public JTextArea Explanation;
@@ -28,10 +31,10 @@ public class DictMenu1 extends JFrame{
 	    }
 
 	    void init(){
-	    	panel = new BackgroundPanel(new ImageIcon("image/backGround1.jpg"));
-	    	panel.setBgImage(new ImageIcon("image/backGround1.jpg"));
+	    	panel = new BackgroundPanel(new ImageIcon(getClass().getResource("/image/backGround1.jpg")));
+	    	panel.setBgImage(new ImageIcon(getClass().getResource("/image/backGround1.jpg")));
 	        //获取背景图片路径
-	        ImageIcon  bg = new ImageIcon("image/backGround1.jpg");
+	        ImageIcon  bg = new ImageIcon(getClass().getResource("/image/backGround1.jpg"));
 	        //建立图像文本
 	        JLabel  label  =  new JLabel(bg);
 	        //设置图片的大小
@@ -51,7 +54,7 @@ public class DictMenu1 extends JFrame{
 	        wanjiashuru.setFont(font);
 	        wanjiashuru.setPreferredSize(new Dimension(100,35));//设置文本框大小
 	        //创建按钮
-	        queding = new JButton("确定");
+	        queding = new RoundedButton("确定");
 	        queding.setFont(font);
 	        listener = new PoliceListenerDict();
 	        listener.setViewDictMenu1(this);
@@ -65,7 +68,7 @@ public class DictMenu1 extends JFrame{
 	        textlabel1= new JLabel("成语详情：");
 	        textlabel1.setFont(font);
 
-	        tuichu= new JButton("退出");
+	        tuichu= new RoundedButton("退出");
 	        tuichu.setFont(font);
 	        tuichu.addActionListener(new ActionListener() {
 	            @Override

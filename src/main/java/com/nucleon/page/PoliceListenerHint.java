@@ -13,10 +13,12 @@ public class PoliceListenerHint implements ActionListener{
     public void setViewSolMenu(SolMenu solMenu) {
         this.viewS = solMenu;
     }
-
+    /*
+     * @author:MaoJiayang;XiaTiantian;ZhangXue'ru;XieQianqian
+     * @date:2023/06/07
+     */
     public void actionPerformed(ActionEvent e) {
-    	String input = viewS.wanjiashuru.getText().trim();
-        if (!input.isEmpty() && SolMenu.computerResult!=null ) {
+        if ( SolMenu.computerResult!=null ) {
         	Idiom Hint = GameChoiceMenu1.game.getHint(SolMenu.computerResult);
         	//System.out.print("提示"+Hint.getWord()+"\n");
         	if(Hint.getState()==404) 

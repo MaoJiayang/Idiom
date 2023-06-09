@@ -28,5 +28,8 @@ public interface GamingLogic {
      * 剩余提示次数写在成语状态中
      */
     double getCurrentScore();//获取当前分数
-
+    /*
+     * @author:MaoJiayang;XiaTiantian;ZhangXue'ru
+     * @date:2023/06/07
+     */
 }

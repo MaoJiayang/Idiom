@@ -20,4 +20,8 @@ public class PoliceListenerDict implements ActionListener {
         viewD.Explanation.setText(output);
         
     }
+        /*
+     * @author:MaoJiayang;XiaTiantian;ZhangXue'ru;XieQianqian
+     * @date:2023/06/07
+     */
 }
